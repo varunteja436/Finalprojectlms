@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Educatorcreate.css";
 
 
 const CreateEducator = () => {
@@ -23,7 +25,16 @@ const CreateEducator = () => {
 
   return (
     <div className="educator-container">
-      <h2>Create Educator</h2>
+      <aside>
+        <ul>
+          <li><Link to="/educatorlist">Educatorlist</Link></li>
+          <li><Link to="/">Logout</Link></li>
+        </ul>
+      </aside>
+      <main className="educator-list-main">
+        <header>
+          <h1>Create Educator</h1>
+        </header>
 
       <input
         type="text"
@@ -73,6 +84,7 @@ const CreateEducator = () => {
       >
         Register Educator
       </button>
+      </main>
     </div>
   );
 };
