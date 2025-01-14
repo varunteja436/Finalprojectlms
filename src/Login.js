@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { get, ref } from "firebase/database";
-import { auth, database } from "./firebase"; 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { get, ref } from "firebase/database";
-import { auth, database } from "./firebase"; 
+import { auth, database } from "./firebase";
 import { useNavigate } from "react-router-dom";
-import './Login.css'; 
-
+import './Login.css';
 
 const adminEmail = 'admin123@gmail.com';
 const adminPassword = 'admin123';
@@ -19,7 +15,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const [loginCreds, setLoginCreds] = useState({ email: "", password: "" });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const onChangeHandler = (name, value) => {
     setLoginCreds({ ...loginCreds, [name]: value });
@@ -39,7 +35,7 @@ const Login = () => {
         alert("Not a valid email");
         return;
       }
-      
+
       if (!email || !password) {
         alert("Email or password is missing!");
         return;
@@ -57,8 +53,8 @@ const Login = () => {
         throw new Error("User not found in database");
       }
     } catch (err) {
-      setError(err.message);  
-      alert(err.message); 
+      setError(err.message);
+      alert(err.message);
     }
   };
 
@@ -92,7 +88,7 @@ const Login = () => {
           </form>
           {error && <p className="error-text">{error}</p>}
           <p className="footer-text">
-            Don't have an account!{" "}
+            Don't have an account?{" "}
             <span
               onClick={() => navigate("/registration")}
               className="signup-link"
@@ -113,4 +109,3 @@ const Login = () => {
 };
 
 export default Login;
-
