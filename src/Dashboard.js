@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -19,16 +19,16 @@ const Dashboard = () => {
 
 
 
-  const logoutUser = async () => {
-    const auth = getAuth();
-    try {
-      await signOut(auth); 
-      navigate("/"); 
-    } catch (error) {
-      console.error("Error logging out:", error);
-      alert("Error logging out. Please try again.");
-    }
-  };
+  // const logoutUser = async () => {
+  //   const auth = getAuth();
+  //   try {
+  //     await signOut(auth); 
+  //     navigate("/"); 
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //     alert("Error logging out. Please try again.");
+  //   }
+  // };
 
   return (
     <div className="dashboard-container">

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { get, ref } from "firebase/database";
 import { auth, database } from "./firebase"; 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { get, ref } from "firebase/database";
+import { auth, database } from "./firebase"; 
 import { useNavigate } from "react-router-dom";
 import './Login.css'; 
+
 
 const adminEmail = 'admin123@gmail.com';
 const adminPassword = 'admin123';
@@ -35,20 +39,25 @@ const Login = () => {
         alert("Not a valid email");
         return;
       }
+      
+      if (!email || !password) {
+        alert("Email or password is missing!");
+        return;
+      }
 
       const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password.trim());
       const user = userCredential.user;
 
-      const userRef = ref(database, `drivers/${user.uid}`);
+      const userRef = ref(database, `users/${user.uid}`);
       const userData = await get(userRef);
 
       if (userData.exists()) {
-        navigate('/home', { state: { email: user.email } });
+        navigate('/StudentDashboard', { state: { email: user.email } });
       } else {
         throw new Error("User not found in database");
       }
     } catch (err) {
-      setError(err.message);
+      setError(err.message);  
       alert(err.message); 
     }
   };
@@ -85,7 +94,7 @@ const Login = () => {
           <p className="footer-text">
             Don't have an account!{" "}
             <span
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/registration")}
               className="signup-link"
             >
               Signup Here.
@@ -104,3 +113,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -1,0 +1,74 @@
+/* Main container with background image */
+.registration-container {
+    background-image: url('./cl.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Wrapper to center the form */
+  .registration-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    height: 100%;
+  }
+  
+  /* Form container styling */
+  .registration-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    height: 100%;
+    width: 40%;
+  }
+  
+  /* Header styling */
+  .registration-header {
+    font-weight: 800;
+    font-size: 50px;
+    border-bottom: 2px solid black;
+    margin: 0;
+    color: #fff;
+  }
+  
+  /* Input field styling */
+  .registration-input {
+    height: 48px;
+    width: 90%;
+    padding: 8px;
+    font-size: 26px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  
+  /* Button styling */
+  .registration-button {
+    font-size: 40px;
+    width: 80%;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Footer text styling */
+  .registration-footer-text {
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .registration-footer-text span {
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+}
