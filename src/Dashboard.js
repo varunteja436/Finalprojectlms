@@ -44,7 +44,7 @@ const Dashboard = () => {
           <h1>Admin Dashboard</h1>
           </header>   
             <section className="dashboard-section">
-        <h1>Welcome, {name}!</h1>
+        <h1>Welcome Admin!</h1>
         </section>
       </main>
     </div>
