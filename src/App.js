@@ -1,17 +1,21 @@
 import React from "react";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom"; 
 import Login from "./Login"; 
-import { BrowserRouter, Route, Routes } from "react-router-dom"; 
-import Dashboard from "./Dashboard"; function App() {
+import Dashboard from "./Dashboard"; 
+import Educatorlist from "./Educatorlist"; 
+import "./App.css";
+
+function App() {
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div style={{ width: "100vw", height: "100vh" }}>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/educatorlist" element={<Educatorlist />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

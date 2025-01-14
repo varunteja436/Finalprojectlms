@@ -17,6 +17,8 @@ const Dashboard = () => {
     }
   }, [navigate]);
 
+
+
   const logoutUser = async () => {
     const auth = getAuth();
     try {
@@ -33,7 +35,7 @@ const Dashboard = () => {
       <h1>Welcome, {name}!</h1>
       <aside>
         <ul>
-
+          <li><Link to="/educatorlist">Educatorlist</Link></li>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>
