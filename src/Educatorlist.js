@@ -21,7 +21,7 @@ const EducatorList = () => {
         <section className="educator-list-section">
           <button
             className="create-educator-button"
-            onClick={() => navigate("/create-educator")}
+            onClick={() => navigate("/educatorcreate")}
           >
             Create Educator
           </button>
