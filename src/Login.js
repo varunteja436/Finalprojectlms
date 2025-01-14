@@ -63,6 +63,7 @@ const Login = () => {
               type="text"
               placeholder="Email ID"
               name="email"
+              value={loginCreds.email}
               onChange={({ target: { name, value } }) => onChangeHandler(name, value)}
               className="login-input"
               required
@@ -71,6 +72,7 @@ const Login = () => {
               type="password"
               placeholder="Password"
               name="password"
+              value={loginCreds.password}
               onChange={({ target: { name, value } }) => onChangeHandler(name, value)}
               className="login-input"
               required
