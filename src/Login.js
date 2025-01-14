@@ -44,7 +44,7 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password.trim());
       const user = userCredential.user;
 
-      const userRef = ref(db, `users/${user.uid}`);
+      const userRef = ref(db, `educators/${user.uid}`);
       const userData = await get(userRef);
 
       if (userData.exists()) {
