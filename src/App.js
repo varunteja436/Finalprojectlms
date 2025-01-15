@@ -11,6 +11,7 @@ import Educatorprofile from "./Educatorprofile";
 import EducatorCreateCourse from "./EducatorCreateCourse";
 import EducatorEditCourse from "./EducatorEditCourse";
 import EducatorCourseList from "./EducatorCourseList";
+import ForgotPassword from "./forgotpassword";
 import "./App.css";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/educatorcreatecourse" element={<EducatorCreateCourse />} />
           <Route path="/educatorEditCourse" element={<EducatorEditCourse />} />
           <Route path="/educatorCourseList" element={<EducatorCourseList />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
         </Routes>
       </div>
     </BrowserRouter>
