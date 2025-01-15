@@ -38,7 +38,7 @@ const CreateEducator = () => {
 
       const educatorUid = user.uid;
 
-      const educatorRef = ref(db, `educators/${educatorUid}`);
+      const educatorRef = ref(db, `users/${educatorUid}`);
       await set(educatorRef, {
         name: fullname,
         age,
