@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { push, ref, set, get, getDatabase } from "firebase/database";
 import { getAuth } from "firebase/auth";
-import "./EducatorCreateCourse.css"; // Importing the new CSS file
+import "./EducatorCreateCourse.css";
 
 const EducatorCreateCourse = () => {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const EducatorCreateCourse = () => {
 
       alert("Course added successfully!");
 
-      // Reset form
+
       setCourseDetails({
         title: "",
         startDate: "",
