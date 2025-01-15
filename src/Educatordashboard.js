@@ -5,6 +5,7 @@ import { getAuth, updatePassword } from "firebase/auth";
 import { db } from "./firebase";
 import "./Educatordashboard.css";
 
+
 const EducatorDashboard = () => {
   const navigate = useNavigate();
 
@@ -72,6 +73,9 @@ const EducatorDashboard = () => {
       <aside>
         <ul>
           <li><Link to="/educatorprofile">Profile</Link></li>
+        </ul>
+        <ul>
+          <li><Link to="/educatorCourseList">Course List</Link></li>
         </ul>
       </aside>
       <main className="educator-dashboard-main">

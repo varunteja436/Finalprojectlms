@@ -42,12 +42,10 @@ const EducatorProfile = () => {
     <div className="educator-profile-container">
       <aside>
         <ul>
-          <li>
-            <Link to="/educatorlist">Back to Educator List</Link>
-          </li>
-          <li>
-            <Link to="/">Logout</Link>
-          </li>
+            <li><Link to="/educatorprofile">Profile</Link></li>
+        </ul>
+        <ul>
+            <li><Link to="/educatorCourseList">Course List</Link></li>
         </ul>
       </aside>
       <main className="educator-profile-main">
