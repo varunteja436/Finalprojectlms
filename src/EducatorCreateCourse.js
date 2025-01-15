@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { push, ref, set, get, getDatabase } from "firebase/database";
 import { getAuth } from "firebase/auth";
-import "./EducatorCreateCourse.css";
+import "./EducatorCreateCourse.css"; // Importing the new CSS file
 
 const EducatorCreateCourse = () => {
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const EducatorCreateCourse = () => {
         endDate: "",
         description: "",
       });
-      navigate("/course-list-educator");
+      navigate("/educatorCourseList");
     } catch (error) {
       console.error("Error adding course: ", error.message);
       alert("Error adding course: " + error.message);
@@ -70,22 +69,10 @@ const EducatorCreateCourse = () => {
   };
 
   return (
-    <div className="educator-create-course-menu">
-      <aside>
-        <ul>
-          <li><Link to="/educatorprofile">Profile</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/educatorCreateCourse">Create Course</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/educatorEditCourse">Manage Courses</Link></li>
-        </ul>
-      </aside>
-
-      <main className="container">
-        <div className="heading">Add Course</div>
-        <div className="form-container">
+    <div className="form-container">
+      <main className="form-main">
+        <div className="form-header">Add Course</div>
+        <div className="form-content">
           <div className="input-group">
             <input
               type="text"
@@ -93,48 +80,56 @@ const EducatorCreateCourse = () => {
               placeholder="Course Name"
               value={courseDetails.title}
               onChange={handleInputChange}
-              className="input"
+              className="input-field"
             />
           </div>
 
-          <div className="schedule-input">
-            <div className="input-wrapper">
-              <label htmlFor="startDate" className="input-label">Start Date</label>
-              <input
-                type="date"
-                id="startDate"
-                name="startDate"
-                value={courseDetails.startDate}
-                onChange={handleInputChange}
-                className="input"
-              />
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="endDate" className="input-label">End Date</label>
-              <input
-                type="date"
-                id="endDate"
-                name="endDate"
-                value={courseDetails.endDate}
-                onChange={handleInputChange}
-                className="input"
-              />
-            </div>
+          <div className="input-wrapper">
+            <input
+              type="text"
+              name="schedule"
+              placeholder="Course Schedule"
+              value={courseDetails.schedule || ''}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+
+          <div className="input-wrapper">
+            <label htmlFor="startDate" className="input-label">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              value={courseDetails.startDate}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+
+          <div className="input-wrapper">
+            <label htmlFor="endDate" className="input-label">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              value={courseDetails.endDate}
+              onChange={handleInputChange}
+              className="input-field"
+            />
           </div>
 
           <div className="textarea-group">
-            <label htmlFor="description" className="textarea-label">Description</label>
             <textarea
               name="description"
               id="description"
               value={courseDetails.description}
               onChange={handleInputChange}
-              className="textarea"
+              className="textarea-field"
             ></textarea>
           </div>
 
           <div className="button-container">
-            <button onClick={addCourse} className="button">
+            <button className="cancel-button" onClick={() => navigate("/educatorCourseList")}>Cancel</button>
+            <button onClick={addCourse} className="submit-button">
               Add Course
             </button>
           </div>

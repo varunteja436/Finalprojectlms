@@ -9,6 +9,8 @@ import StudentDashboard from "./StudentDashboard";
 import EducatorDashboard from "./Educatordashboard";
 import Educatorprofile from "./Educatorprofile";
 import EducatorCreateCourse from "./EducatorCreateCourse";
+import EducatorEditCourse from "./EducatorEditCourse";
+import EducatorCourseList from "./EducatorCourseList";
 import "./App.css";
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
           <Route path="/educatordashboard" element={<EducatorDashboard />} />
           <Route path="/educatorprofile" element={<Educatorprofile />} />
           <Route path="/educatorcreatecourse" element={<EducatorCreateCourse />} />
+          <Route path="/educatorEditCourse" element={<EducatorEditCourse />} />
+          <Route path="/educatorCourseList" element={<EducatorCourseList />} />
         </Routes>
       </div>
     </BrowserRouter>

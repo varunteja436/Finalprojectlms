@@ -75,10 +75,7 @@ const EducatorDashboard = () => {
           <li><Link to="/educatorprofile">Profile</Link></li>
         </ul>
         <ul>
-          <li><Link to="/educatorCreateCourse">Create Course</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/educatorEditCourse">Manage Courses</Link></li>
+          <li><Link to="/educatorCourseList">Course List</Link></li>
         </ul>
       </aside>
       <main className="educator-dashboard-main">
