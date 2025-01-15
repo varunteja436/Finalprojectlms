@@ -69,6 +69,7 @@ const StudentProfile = () => {
         <ul>
           <li><Link to="/studentprofile">Profile</Link></li>
         </ul>
+        
       </aside>
       <main className="student-profile-main">
         <header>
