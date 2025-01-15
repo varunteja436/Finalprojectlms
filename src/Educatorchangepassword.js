@@ -43,6 +43,11 @@ const EducatorChangePassword = () => {
 
   return (
     <div className="educator-change-password-container">
+      <div className="welcomenotes">
+        <h1>Welcome to the Learning Management System</h1>
+        <span className="username-highlight">"{user?.displayName || 'Educator'}"</span>
+        <p>As a first-time user, please change your password to secure your account.</p>
+      </div>
       <div className="change-password-form">
         <h1>Change Password</h1>
         <input
