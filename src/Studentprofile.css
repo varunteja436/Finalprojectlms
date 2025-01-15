@@ -97,9 +97,7 @@
     box-sizing: border-box;
   }
   
-  .student-details-section input[type="number"] {
-    -moz-appearance: textfield;
-  }
+ 
   
   .student-details-section input:focus {
     border-color: #3498db;
@@ -107,7 +105,7 @@
   }
   
   .student-details-section button {
-    width: 100%;
+    width: 60%;
     padding: 12px;
     background-color: #3498db;
     color: white;
@@ -116,6 +114,7 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 10px;
+    margin-left:15%;
   }
   
   .student-details-section button:hover {

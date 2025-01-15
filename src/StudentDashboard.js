@@ -23,19 +23,17 @@ const StudentDashboard = () => {
         <div className="student-dashboard-container">
         <aside>
           <ul>
-            <li><Link to="/studentprofile">Profile</Link></li>
+            <li><Link to="/studentprofile"> View Profile</Link></li>
           </ul>
         </aside>
         <main className="student-dashboard-main">
           <header>
             <h1>Student Dashboard</h1>
           </header>
-          <section className="student-details-section">
-          <div className="student-details">
-            {name ? `Welcome, ${name}` : "Loading..."}
+            <div className="student-details">
+              {name ? `Welcome, ${name}` : "Loading..."}
+            </div>
 
-          </div>
-          </section>
         </main>
       </div>
     );
