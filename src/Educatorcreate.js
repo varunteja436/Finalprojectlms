@@ -46,7 +46,7 @@ const CreateEducator = () => {
         email,
         qualification,
         role: "EDUCATOR",
-        firstTimeLogin: true, // Set first-time login flag
+        firstTimeLogin: true,
         uid: user.uid,
         createdAt: Date.now(),
       });

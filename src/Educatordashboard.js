@@ -71,7 +71,7 @@ const EducatorDashboard = () => {
     <div className="educator-dashboard-container">
       <aside>
         <ul>
-          <li><Link to="/profile">Profile</Link></li>
+          <li><Link to="/educatorprofile">Profile</Link></li>
         </ul>
       </aside>
       <main className="educator-dashboard-main">
