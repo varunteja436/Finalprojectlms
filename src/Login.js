@@ -1,64 +1,48 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { get, ref } from "firebase/database";
-import { auth, database } from "./firebase"; 
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { get, ref } from "firebase/database";
-import { auth, database } from "./firebase"; 
 import { useNavigate } from "react-router-dom";
-import './Login.css'; 
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { ref, get } from "firebase/database";
+import { auth, database } from "./firebase"; 
+import './Login.css';
 
 const adminEmail = 'admin123@gmail.com';
 const adminPassword = 'admin123';
 
-const Login = () => {
-  const regexPatterns = {
-    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-  };
-
+function Signin() {
   const navigate = useNavigate();
-  const [loginCreds, setLoginCreds] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const onChangeHandler = (name, value) => {
-    setLoginCreds({ ...loginCreds, [name]: value });
-  };
-
-  const loginUser = async (event) => {
+  const handleSignin = async (event) => {
     event.preventDefault();
     try {
-      const { email, password } = loginCreds;
-
       if (email === adminEmail && password === adminPassword) {
+        console.log("Admin login successful!");
         navigate('/dashboard');
-        return;
-      }
-
-      if (!regexPatterns.email.test(email)) {
-        alert("Not a valid email");
-        return;
-      }
-      
-      if (!email || !password) {
-        alert("Email or password is missing!");
-        return;
-      }
-
-      const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password.trim());
-      const user = userCredential.user;
-
-      const userRef = ref(database, `users/${user.uid}`);
-      const userData = await get(userRef);
-
-      if (userData.exists()) {
-        navigate('/StudentDashboard', { state: { email: user.email } });
       } else {
-        throw new Error("User not found in database");
+        
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const userRef = ref(database, 'users/' + user.uid);
+        const userSnapshot = await get(userRef);
+
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.val();
+          if (userData.role === "EDUCATOR") {
+            navigate('/educatordashboard', { state: { email: user.email } }); 
+          } else if (userData.role === "STUDENT") {
+            navigate('/studentdashboard', { state: { email: user.email } }); 
+          } else {
+            throw new Error("Unknown role, access denied.");
+          }
+        } else {
+          throw new Error('User not found in database');
+        }
       }
     } catch (err) {
-      setError(err.message);  
-      alert(err.message); 
+      setError(err.message);
     }
   };
 
@@ -66,33 +50,29 @@ const Login = () => {
     <div className="login-container">
       <div className="login-wrapper">
         <div className="login-form-container">
-          <div className="login-header">Login</div>
-          <form onSubmit={loginUser}>
+          <div className="login-header">Sign In</div>
+          <form onSubmit={handleSignin}>
             <input
-              type="text"
-              placeholder="Email ID"
-              name="email"
-              value={loginCreds.email}
-              onChange={({ target: { name, value } }) => onChangeHandler(name, value)}
+              type="email"
               className="login-input"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input
               type="password"
-              placeholder="Password"
-              name="password"
-              value={loginCreds.password}
-              onChange={({ target: { name, value } }) => onChangeHandler(name, value)}
               className="login-input"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button type="submit" className="login-button">
-              Login
-            </button>
+            <button type="submit" className="login-button">Sign In</button>
           </form>
           {error && <p className="error-text">{error}</p>}
           <p className="footer-text">
-            Don't have an account!{" "}
+            Don't have an account?{" "}
             <span
               onClick={() => navigate("/registration")}
               className="signup-link"
@@ -104,13 +84,12 @@ const Login = () => {
             onClick={() => navigate("/forgot-password")}
             className="forgot-password"
           >
-            Forgot Password
+            Forgot Password?
           </p>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default Login;
-
+export default Signin;
