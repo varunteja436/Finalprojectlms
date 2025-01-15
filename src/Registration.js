@@ -11,6 +11,7 @@ const Registration = () => {
   const regexPatterns = {
     name: /^[A-Za-z]+([ '-][A-Za-z]+)*$/,
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
   };
 
   const [userProfile, setUserProfile] = useState({
@@ -28,6 +29,12 @@ const Registration = () => {
     try {
       if (!regexPatterns.email.test(userProfile?.email)) {
         alert("Not a valid email");
+        return;
+      }
+      if (!regexPatterns.password.test(userProfile?.password)) {
+        alert(
+          "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+        );
         return;
       }
       if (!userProfile.name || !userProfile.email) {
