@@ -1,0 +1,157 @@
+/* General container for the educator create course page */
+.educator-create-course-menu {
+  display: flex;
+  height: 100vh;
+}
+
+
+/* Main content container */
+.container1 {
+  width: 100%;
+  flex: 1;
+  padding: 40px;
+  background-color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Heading for the form */
+.heading1 {
+  font-size: 40px;
+  font-weight: 500;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+/* Form container */
+.form-container1 {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* Group for the input fields (title, start date, end date) */
+.input-group1 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+/* Wrapper for each input field */
+.input-wrapper1 {
+  width: 200%;
+  margin-left: -20px;
+}
+
+.input-wrapper1:last-child {
+  margin-right: 0;
+}
+
+/* Common styles for input fields */
+.input {
+  font-size: 22px;
+  font-weight: 400;
+  height: 33px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+/* Label styles for input fields */
+.input-label {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Styles for the textarea */
+.textarea-group1 {
+  width: 78%;
+}
+
+.textarea {
+  font-size: 22px;
+  font-weight: 400;
+  height: 83px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+/* Label for the textarea */
+.textarea-label {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Button container */
+.button-container1 {
+  display: flex;
+  justify-content: center;
+}
+
+/* Button styles */
+.button {
+  font-size: 22px;
+  padding: 2px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+.cancel-button {
+  font-size: 22px;
+  padding: 2px 20px;
+  background-color: #d71616;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #2980b9;
+}
+
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}

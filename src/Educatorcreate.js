@@ -46,6 +46,7 @@ const CreateEducator = () => {
         email,
         qualification,
         role: "EDUCATOR",
+        firstTimeLogin: true,
         uid: user.uid,
         createdAt: Date.now(),
       });
