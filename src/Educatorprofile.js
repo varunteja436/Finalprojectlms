@@ -43,7 +43,7 @@ const EducatorProfile = () => {
       <aside>
         <ul>
           <li>
-            <Link to="/educatorlist">Back to Educator List</Link>
+            <Link to="/educatorprofile"> Educator List</Link>
           </li>
           <li>
             <Link to="/">Logout</Link>

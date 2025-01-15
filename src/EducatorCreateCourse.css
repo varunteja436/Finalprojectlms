@@ -1,0 +1,119 @@
+.educator-create-course-menu {
+  display: flex;
+  height: 100vh;
+}
+
+aside {
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+aside ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+aside ul li {
+  margin: 15px 0;
+}
+
+aside ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+aside ul li a:hover {
+  color: #f39c12;
+}
+
+.container {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: #ecf0f1;
+  overflow-y: auto;
+}
+
+.heading {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  width: 95%;
+  margin-left: -10px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.input-group,
+.schedule-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+.textarea {
+  resize: none;
+  height: 100px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  width: 90%;
+  max-width: 400px;
+  height: 50px;
+  background-color: #007bff;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
