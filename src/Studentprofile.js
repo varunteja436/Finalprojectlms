@@ -67,9 +67,11 @@ const StudentProfile = () => {
     <div className="student-profile-container">
       <aside>
         <ul>
-          <li><Link to="/studentprofile">Profile</Link></li>
-        </ul>
-        
+          <li><Link to="/studentprofile"> View Profile</Link></li>
+        </ul>  
+         <ul>
+          <li><Link to="/">Logout</Link></li>
+        </ul>  
       </aside>
       <main className="student-profile-main">
         <header>
