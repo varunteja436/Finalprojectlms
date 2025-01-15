@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import { ref, get } from "firebase/database";
-import { db } from "./firebase"; 
+import { db } from "./firebase";
 import "./Educatorlist.css";
 
 const EducatorList = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [educators, setEducators] = useState([]);
 
   useEffect(() => {
     const fetchEducators = async () => {
-      const educatorsRef = ref(db, "educators");
+      const educatorsRef = ref(db, "users");
       const snapshot = await get(educatorsRef);
       if (snapshot.exists()) {
         const educatorsData = snapshot.val();
-        const educatorsArray = Object.keys(educatorsData).map((key) => ({
-          ...educatorsData[key],
-          id: key,
-        }));
+        const educatorsArray = Object.keys(educatorsData)
+          .map((key) => ({
+            ...educatorsData[key],
+            id: key,
+          }))
+          .filter((user) => user.role === "EDUCATOR");
         setEducators(educatorsArray);
       } else {
         console.log("No educators found");
       }
     };
-    
+
     fetchEducators();
   }, []);
 
@@ -31,8 +33,12 @@ const EducatorList = () => {
     <div className="educator-list-container">
       <aside>
         <ul>
-          <li><Link to="/educatorlist">Educatorlist</Link></li>
-          <li><Link to="/">Logout</Link></li>
+          <li>
+            <Link to="/educatorlist">Educator List</Link>
+          </li>
+          <li>
+            <Link to="/">Logout</Link>
+          </li>
         </ul>
       </aside>
       <main className="educator-list-main">

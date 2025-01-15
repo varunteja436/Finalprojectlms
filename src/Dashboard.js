@@ -20,16 +20,6 @@ const Dashboard = () => {
 
 
 
-  // const logoutUser = async () => {
-  //   const auth = getAuth();
-  //   try {
-  //     await signOut(auth); 
-  //     navigate("/"); 
-  //   } catch (error) {
-  //     console.error("Error logging out:", error);
-  //     alert("Error logging out. Please try again.");
-  //   }
-  // };
 
   return (
     <div className="dashboard-container">
