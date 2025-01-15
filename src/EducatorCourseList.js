@@ -140,6 +140,9 @@
           <ul>
             <li><Link to="/educatorCourseList">Course List</Link></li>
           </ul>
+          <ul>
+            <li><Link to="/">logout</Link></li>
+          </ul>
         </aside>
         {courseContainer}
         {showCourseEditForm && showCourseDetails && (

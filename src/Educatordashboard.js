@@ -70,23 +70,26 @@ const EducatorDashboard = () => {
 
   return (
     <div className="educator-dashboard-container">
-      <aside>
-        <ul>
-          <li><Link to="/educatorprofile">Profile</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/educatorCourseList">Course List</Link></li>
-        </ul>
-      </aside>
-      <main className="educator-dashboard-main">
-        <header>
-          <h1>Educator Dashboard</h1>
-        </header>
-        <section className="educator-dashboard-content">
-          <h1>Welcome, Educator!</h1>
-        </section>
-      </main>
-    </div>
+    <aside>
+      <ul>
+        <li><Link to="/educatorprofile">Profile</Link></li>
+      </ul>
+      <ul>
+        <li><Link to="/educatorCourseList">Course List</Link></li>
+      </ul>
+      <ul>
+        <li><Link to="/">Logout</Link></li>
+      </ul>
+    </aside>
+    <main className="educator-dashboard-main">
+      <header>
+        <h1>Educator Dashboard</h1>
+      </header>
+      <section className="educator-dashboard-content">
+        <h1>Welcome, Educator!</h1>
+      </section>
+    </main>
+  </div>
   );
 };
 
