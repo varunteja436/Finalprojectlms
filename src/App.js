@@ -12,6 +12,7 @@ import EducatorCreateCourse from "./EducatorCreateCourse";
 import EducatorEditCourse from "./EducatorEditCourse";
 import EducatorCourseList from "./EducatorCourseList";
 import ForgotPassword from "./forgotpassword";
+import Educatorchangepassword from "./Educatorchangepassword";
 import "./App.css";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/educatorEditCourse" element={<EducatorEditCourse />} />
           <Route path="/educatorCourseList" element={<EducatorCourseList />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/educatorchangepassword" element={<Educatorchangepassword />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -77,11 +77,11 @@ header {
 }
 
 table {
-  width: 170%;
+  width: 60%;
   border-collapse: collapse;
   margin-top: 20px;
   border: 1px solid #ddd;
-  margin-left: -100px;
+
 }
 
 table th,
@@ -89,16 +89,19 @@ table td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+
 }
 
 table th {
   background-color: #3498db;
   color: white;
   font-size: 16px;
+
 }
 
 table td {
   font-size: 14px;
+  margin-right: 40px;
 }
 
 
