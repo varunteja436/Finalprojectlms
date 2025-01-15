@@ -6,6 +6,7 @@ import Educatorlist from "./Educatorlist";
 import Educatorcreate from "./Educatorcreate"; 
 import Registration from "./Registration"; 
 import StudentDashboard from "./StudentDashboard"; 
+import EducatorDashboard from "./Educatordashboard";
 import "./App.css";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/educatorlist" element={<Educatorlist />} />
           <Route path="/educatorcreate" element={<Educatorcreate />} />
           <Route path="/studentdashboard" element={<StudentDashboard />} />
+          <Route path="/educatordashboard" element={<EducatorDashboard />} />
         </Routes>
       </div>
     </BrowserRouter>

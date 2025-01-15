@@ -1,0 +1,113 @@
+.educator-dashboard-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  aside {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+  }
+  
+  aside ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  aside ul li {
+    margin: 15px 0;
+  }
+  
+  aside ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  aside ul li a:hover {
+    color: #f39c12;
+  }
+  
+  .educator-dashboard-main {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+  }
+  
+  header {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+    width: 110%;
+    margin-left: -10px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  .dashboard-section {
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .dashboard-action-button {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .dashboard-action-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .educator-dashboard-container a {
+    cursor: pointer;
+  }
+  
+  .dashboard-table-section {
+    margin-top: 30px;
+  }
+  
+  table {
+    width: 170%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    margin-left: -100px;
+  }
+  
+  table th,
+  table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+  }
+  
+  table td {
+    font-size: 14px;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  table td,
+  table th {
+    text-align: left;
+    vertical-align: middle;
+  }
