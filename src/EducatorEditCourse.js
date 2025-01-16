@@ -1,36 +1,152 @@
-import React from "react";
-import { ref, update } from "firebase/database";
-import { db } from "./firebase";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./EducatorEditCourse.css"; 
+import { getDatabase, ref, set } from "firebase/database";
+import { getAuth } from "firebase/auth";
+import './EducatorEditCourse.css';
 
-const EducatorEditCourse = ({
-  showCourseDetails = { title: '', schedule: '', description: '', startDate: '', endDate: '' }, 
-  setShowCourseDetails,
-  setShowCourseEditForm,
-  fetchAllCourses,
+const EducatorEditCourse = ({ 
+  showCourseDetails, 
+  setShowCourseEditForm, 
+  setShowCourseDetails, 
+  fetchAllCourses 
 }) => {
-  if (!showCourseDetails) {
-    return <div>Loading...</div>; 
-  }
+  const navigate = useNavigate();
+
+
+  const [courseDetails, setCourseDetails] = useState({
+    title: "",
+    startDate: "",
+    endDate: "",
+    description: "",
+    weeklySchedules: [],
+    selectedWeek: 1,
+  });
+
+  useEffect(() => {
+    if (showCourseDetails) {
+      setCourseDetails({
+        title: showCourseDetails.title,
+        startDate: showCourseDetails.startDate,
+        endDate: showCourseDetails.endDate,
+        description: showCourseDetails.description,
+        weeklySchedules: showCourseDetails.weeklySchedules || [],
+        selectedWeek: 1, 
+      });
+    }
+  }, [showCourseDetails]);
 
   const handleInputChange = (e) => {
-    setShowCourseDetails({
-      ...showCourseDetails,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleScheduleChange = (e, day, week) => {
+    const { name, value } = e.target;
+    setCourseDetails((prevDetails) => {
+      const updatedWeeklySchedules = prevDetails.weeklySchedules.map((weekSchedule, idx) => {
+        if (idx === week - 1) {
+          const updatedSchedule = weekSchedule.schedule.map((item) =>
+            item.day === day ? { ...item, [name]: value } : item
+          );
+          return { ...weekSchedule, schedule: updatedSchedule };
+        }
+        return weekSchedule;
+      });
+      return { ...prevDetails, weeklySchedules: updatedWeeklySchedules };
     });
   };
 
-  const editCourse = async () => {
-    try {
-      const courseRef = ref(db, `courses/${showCourseDetails.id}`);
-      await update(courseRef, showCourseDetails);
+  const handleDaySelection = (e, day, week) => {
+    const isChecked = e.target.checked;
 
-      console.log("Course updated successfully!");
-      setShowCourseDetails({});
-      setShowCourseEditForm(false);
-      await fetchAllCourses();
+    setCourseDetails((prevDetails) => {
+      const updatedWeeklySchedules = prevDetails.weeklySchedules.map((weekSchedule, idx) => {
+        if (idx === week - 1) {
+          if (isChecked) {
+            return {
+              ...weekSchedule,
+              schedule: [...weekSchedule.schedule, { day, startTime: "", endTime: "" }],
+            };
+          } else {
+            return {
+              ...weekSchedule,
+              schedule: weekSchedule.schedule.filter((item) => item.day !== day),
+            };
+          }
+        }
+        return weekSchedule;
+      });
+      return { ...prevDetails, weeklySchedules: updatedWeeklySchedules };
+    });
+  };
+
+  const handleWeekChange = (e) => {
+    const selectedWeek = parseInt(e.target.value);
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      selectedWeek,
+    }));
+  };
+
+  const updateCourse = async () => {
+    const { title, startDate, endDate, description, weeklySchedules } = courseDetails;
+
+    if (!title || !startDate || !endDate || !description || weeklySchedules.length === 0) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    const today = new Date().toISOString().split('T')[0]; 
+    if (startDate < today) {
+      alert("Start date must be today or in the future.");
+      return;
+    }
+
+
+    if (endDate < startDate) {
+      alert("End date cannot be before the start date.");
+      return;
+    }
+
+    for (let week of weeklySchedules) {
+      for (let { startTime, endTime } of week.schedule) {
+        const startDateTime = new Date(`${startDate}T${startTime}`);
+        const endDateTime = new Date(`${startDate}T${endTime}`);
+
+        if (endDateTime <= startDateTime) {
+          alert(`End time for ${week.day} must be later than the start time.`);
+          return;
+        }
+      }
+    }
+
+    try {
+      const db = getDatabase();
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      const educatorDetails = showCourseDetails?.educatorDetails || {};
+
+      const coursesRef = ref(db, `courses/${showCourseDetails.id}`);
+
+      await set(coursesRef, {
+        id: showCourseDetails.id,
+        title,
+        startDate,
+        endDate,
+        description,
+        weeklySchedules, 
+        educatorDetails, 
+        createdAt: new Date().toISOString(),
+      });
+
       alert("Course updated successfully!");
+      fetchAllCourses();
+      setShowCourseEditForm(false); 
+      setShowCourseDetails(null); 
+      navigate("/educatorCourseList");
     } catch (error) {
       console.error("Error updating course: ", error.message);
       alert("Error updating course: " + error.message);
@@ -38,68 +154,110 @@ const EducatorEditCourse = ({
   };
 
   return (
-    <main className="form-container">
-        <div className="form-header">Edit Course</div>
-
-        <div className="input-group">
-          <div className="input-wrapper">
+    <div className="edit-course-containerr">
+      <main className="edit-course-mainn">
+        <div className="form-headerr">Edit Course</div>
+        <div className="form-contentt">
+          <div className="input-groupp">
             <input
               type="text"
               name="title"
               placeholder="Course Name"
-              value={showCourseDetails.title || ''} 
-              onChange={handleInputChange}
-              className="input-field"
-            />
-          </div>
-          
-          <div className="input-wrapper">
-            <input
-              type="text"
-              name="schedule"
-              placeholder="Course Schedule"
-              value={showCourseDetails.schedule || ''} 
+              value={courseDetails.title}
               onChange={handleInputChange}
               className="input-field"
             />
           </div>
 
-          <div className="input-wrapper">
+          <div className="input-wrapperr">
             <label htmlFor="startDate" className="input-label">Start Date</label>
             <input
               type="date"
               name="startDate"
-              value={showCourseDetails.startDate || ''} 
+              value={courseDetails.startDate}
               onChange={handleInputChange}
               className="input-field"
             />
           </div>
 
-          <div className="input-wrapper">
+          <div className="input-wrapperr">
             <label htmlFor="endDate" className="input-label">End Date</label>
             <input
               type="date"
               name="endDate"
-              value={showCourseDetails.endDate || ''}
+              value={courseDetails.endDate}
               onChange={handleInputChange}
               className="input-field"
             />
           </div>
-        </div>
 
-        <div className="textarea-group">
-          <textarea
-            name="description"
-            value={showCourseDetails.description || ''} 
-            onChange={handleInputChange}
-            className="textarea-field"
-          ></textarea>
-        </div>
+          <div className="input-wrapperr">
+            <label htmlFor="selectedWeek" className="input-label">Select Week</label>
+            <select name="selectedWeek" value={courseDetails.selectedWeek} onChange={handleWeekChange}>
+              {courseDetails.weeklySchedules.map((week, index) => (
+                <option key={index} value={index + 1}>
+                  Week {index + 1} ({week.startDate} - {week.endDate})
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <button onClick={editCourse} className="submit-button">
-          Edit Course
-        </button>
+          <div className="input-wrapperr">
+            <label className="input-label">Select Schedule Days for Week {courseDetails.selectedWeek}</label>
+            <div className="days-of-week">
+              {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+                <div key={day} className="day-checkbox">
+                  <input
+                    type="checkbox"
+                    name={day}
+                    checked={courseDetails.weeklySchedules[courseDetails.selectedWeek - 1]?.schedule.some((item) => item.day === day)}
+                    onChange={(e) => handleDaySelection(e, day, courseDetails.selectedWeek)}
+                  />
+                  <label>{day}</label>
+                  {courseDetails.weeklySchedules[courseDetails.selectedWeek - 1]?.schedule.some((item) => item.day === day) && (
+                    <div className="time-inputs">
+                      <label>Start Time</label>
+                      <input
+                        type="time"
+                        name="startTime"
+                        value={courseDetails.weeklySchedules[courseDetails.selectedWeek - 1]?.schedule.find((item) => item.day === day)?.startTime || ""}
+                        onChange={(e) => handleScheduleChange(e, day, courseDetails.selectedWeek)}
+                      />
+                      <label>End Time</label>
+                      <input
+                        type="time"
+                        name="endTime"
+                        value={courseDetails.weeklySchedules[courseDetails.selectedWeek - 1]?.schedule.find((item) => item.day === day)?.endTime || ""}
+                        onChange={(e) => handleScheduleChange(e, day, courseDetails.selectedWeek)}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="textarea-groupp">
+            <textarea
+              name="description"
+              id="description"
+              value={courseDetails.description}
+              onChange={handleInputChange}
+              className="textarea-fieldd"
+            ></textarea>
+          </div>
+
+          <div className="button-containerr">
+            <button className="cancel-buttonn" onClick={() => setShowCourseEditForm(false)}>
+              Cancel
+            </button>
+            <button onClick={updateCourse} className="submit-buttonn">
+              Update Course
+            </button>
+          </div>
+        </div>
       </main>
+    </div>
   );
 };
 
