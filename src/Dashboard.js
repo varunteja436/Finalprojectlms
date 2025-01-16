@@ -25,7 +25,12 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <aside>
         <ul>
+          <li><Link to="/dashboard">Home</Link></li>
+          </ul>
+        <ul>
           <li><Link to="/educatorlist">Educatorlist</Link></li>
+          </ul>
+        <ul>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>

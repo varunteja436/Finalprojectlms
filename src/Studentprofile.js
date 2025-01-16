@@ -87,8 +87,13 @@ const StudentProfile = () => {
   return (
     <div className="student-profile-container">
       <aside className="sidebar">
-        <ul>
+          <ul>
+            <li><Link to="/studentdashboard">Home</Link></li>
+          </ul>
+          <ul>
           <li><Link to="/studentprofile">View Profile</Link></li>
+          </ul>
+          <ul>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>

@@ -171,11 +171,11 @@ const EducatorCreateCourse = () => {
   };
 
   return (
-    <div className="form-container">
-      <main className="form-main">
-        <div className="form-header">Add Course</div>
-        <div className="form-content">
-          <div className="input-group">
+    <div className="form-containerr1">
+      <main className="form-mainn1">
+        <div className="form-headerr1">Add Course</div>
+        <div className="form-contentt1">
+          <div className="input-groupp1">
             <input
               type="text"
               name="title"
@@ -186,7 +186,7 @@ const EducatorCreateCourse = () => {
             />
           </div>
 
-          <div className="input-wrapper">
+          <div className="input-wrappercourse">
             <label htmlFor="startDate" className="input-label">Start Date</label>
             <input
               type="date"
@@ -198,7 +198,7 @@ const EducatorCreateCourse = () => {
             />
           </div>
 
-          <div className="input-wrapper">
+          <div className="input-wrappercourse">
             <label htmlFor="endDate" className="input-label">End Date</label>
             <input
               type="date"
@@ -210,7 +210,7 @@ const EducatorCreateCourse = () => {
             />
           </div>
 
-          <div className="input-wrapper">
+          <div className="input-wrappercourse">
             <label htmlFor="selectedWeek" className="input-label">Select Week</label>
             <select name="selectedWeek" value={courseDetails.selectedWeek} onChange={handleWeekChange}>
               {courseDetails.weeklySchedules.map((week, index) => (
@@ -222,7 +222,7 @@ const EducatorCreateCourse = () => {
           </div>
 
           
-          <div className="input-wrapper">
+          <div className="input-wrappercourse">
             <label className="input-label">Select Schedule Days for Week {courseDetails.selectedWeek}</label>
             <div className="days-of-week">
               {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
@@ -259,7 +259,7 @@ const EducatorCreateCourse = () => {
             </div>
           </div>
 
-          <div className="textarea-group">
+          <div className="textarea-groupp1">
             <textarea
               name="description"
               id="description"
@@ -269,11 +269,10 @@ const EducatorCreateCourse = () => {
             ></textarea>
           </div>
 
-          <div className="button-container">
-            <button className="cancel-button" onClick={() => navigate("/educatorCourseList")}>Cancel</button>
-            <button onClick={addCourse} className="submit-button">
-              Add Course
-            </button>
+          <div className="button-containerr1">
+          <button onClick={addCourse} className="submit-buttonn1">Add Course</button>
+            <button className="cancel-buttonn1" onClick={() => navigate("/educatorCourseList")}>Cancel</button>
+            
           </div>
         </div>
       </main>

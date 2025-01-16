@@ -43,6 +43,9 @@ const EducatorDashboard = () => {
     <div className="educator-dashboard-container">
     <aside>
       <ul>
+        <li><Link to="/educatordashboard">Home</Link></li>
+      </ul>
+      <ul>
         <li><Link to="/educatorprofile">Profile</Link></li>
       </ul>
       <ul>
@@ -57,7 +60,7 @@ const EducatorDashboard = () => {
         <h1>Educator Dashboard</h1>
       </header>
       <section className="educator-dashboard-content">
-        <h1>Welcome, Educator!</h1>
+        <h1>Welcome, {educatorName}!</h1>
       </section>
     </main>
   </div>

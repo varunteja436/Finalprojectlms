@@ -166,6 +166,9 @@ const EducatorCourseList = () => {
       <>
         <aside>
           <ul>
+            <li><Link to="/educatordashboard">Home</Link></li>
+          </ul>
+          <ul>
             <li><Link to="/educatorprofile">Profile</Link></li>
           </ul>
           <ul>

@@ -23,6 +23,9 @@ const StudentDashboard = () => {
         <div className="student-dashboard-container">
         <aside>
           <ul>
+            <li><Link to="/studentdashboard">Home</Link></li>
+          </ul>
+          <ul>
             <li><Link to="/studentprofile"> View Profile</Link></li>
           </ul>
           <ul><li><Link to="/">Logout</Link></li></ul>
