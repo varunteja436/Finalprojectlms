@@ -31,8 +31,9 @@ const StudentDashboard = () => {
           <header>
             <h1>Student Dashboard</h1>
           </header>
-            <div className="student-details">
-              {name ? `Welcome, ${name}` : "Loading..."}
+          <div className="student-details">
+          {name ? `Welcome, ${name}` : "Loading..."}
+
             </div>
 
         </main>
