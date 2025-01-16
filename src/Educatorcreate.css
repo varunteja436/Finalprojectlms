@@ -50,21 +50,44 @@
     margin-bottom: 20px;
     text-align: center;
   }
+
+  .form-container {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
   
   .input-field {
-    height: 48px;
-    width: 90%;
+    width: 100%;
+    height: 40px;
     padding: 8px;
-    font-size: 16px;
+    font-size: 14px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    border-radius: 4px;
   }
   
   .submit-button {
-    height: 80px;
-    width: 90%;
-    font-size: 18px;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -77,6 +100,9 @@
     background-color: #0056b3;
   }
   
+
+
+  
   .educator-list-section {
     margin-top: 40px;
     text-align: center;
@@ -86,8 +112,5 @@
     cursor: pointer;
   }
   
-  .submit-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+
   

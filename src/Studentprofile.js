@@ -41,9 +41,42 @@ const StudentProfile = () => {
     setUpdatedStudent({ ...updatedStudent, [e.target.name]: e.target.value });
   };
 
+  const validateFields = () => {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+    const phoneRegex = /^[0-9]{10}$/;
+    const ageRegex = /^[1-9][0-9]?$/; 
+
+    if (!nameRegex.test(updatedStudent.name)) {
+      alert("Please enter a valid name (only letters and spaces).");
+      return false;
+    }
+
+    if (!emailRegex.test(updatedStudent.email)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+
+    if (!ageRegex.test(updatedStudent.age)) {
+      alert("Please enter a valid age (1-99).");
+      return false;
+    }
+
+    if (!phoneRegex.test(updatedStudent.number)) {
+      alert("Please enter a valid phone number (10 digits).");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleUpdate = async () => {
     if (!updatedStudent.name || !updatedStudent.email || !updatedStudent.age || !updatedStudent.number) {
       alert("All fields are required!");
+      return;
+    }
+
+    if (!validateFields()) {
       return;
     }
 
@@ -67,7 +100,10 @@ const StudentProfile = () => {
     <div className="student-profile-container">
       <aside>
         <ul>
-          <li><Link to="/studentprofile">Profile</Link></li>
+          <li><Link to="/studentprofile">View Profile</Link></li>
+        </ul>
+        <ul>
+          <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>
       <main className="student-profile-main">
