@@ -29,11 +29,15 @@ const EducatorEditCourse = ({
         startDate: showCourseDetails.startDate,
         endDate: showCourseDetails.endDate,
         description: showCourseDetails.description,
-        weeklySchedules: showCourseDetails.weeklySchedules || [],
+        weeklySchedules: showCourseDetails.weeklySchedules.map(week => ({
+          ...week,
+          schedule: week.schedule || [],
+        })) || [],
         selectedWeek: 1, 
       });
     }
   }, [showCourseDetails]);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,53 +47,69 @@ const EducatorEditCourse = ({
     }));
   };
 
-  const handleScheduleChange = (e, day, week) => {
-    const { name, value } = e.target;
-    setCourseDetails((prevDetails) => {
-      const updatedWeeklySchedules = prevDetails.weeklySchedules.map((weekSchedule, idx) => {
-        if (idx === week - 1) {
-          const updatedSchedule = weekSchedule.schedule.map((item) =>
-            item.day === day ? { ...item, [name]: value } : item
-          );
-          return { ...weekSchedule, schedule: updatedSchedule };
-        }
-        return weekSchedule;
-      });
-      return { ...prevDetails, weeklySchedules: updatedWeeklySchedules };
-    });
-  };
-
   const handleDaySelection = (e, day, week) => {
     const isChecked = e.target.checked;
-
+  
     setCourseDetails((prevDetails) => {
-      const updatedWeeklySchedules = prevDetails.weeklySchedules.map((weekSchedule, idx) => {
-        if (idx === week - 1) {
-          if (isChecked) {
-            return {
-              ...weekSchedule,
-              schedule: [...weekSchedule.schedule, { day, startTime: "", endTime: "" }],
-            };
-          } else {
-            return {
-              ...weekSchedule,
-              schedule: weekSchedule.schedule.filter((item) => item.day !== day),
-            };
-          }
-        }
-        return weekSchedule;
-      });
+      const updatedWeeklySchedules = [...prevDetails.weeklySchedules];
+      if (!updatedWeeklySchedules[week - 1]) {
+        updatedWeeklySchedules[week - 1] = { startDate: "", endDate: "", schedule: [] };
+      }
+  
+      // Add or remove the day for the specific week
+      if (isChecked) {
+        updatedWeeklySchedules[week - 1].schedule.push({ day, startTime: "", endTime: "" });
+      } else {
+        updatedWeeklySchedules[week - 1].schedule = updatedWeeklySchedules[week - 1].schedule.filter(item => item.day !== day);
+      }
+  
+      // Remove the week if it has no schedule days left
+      if (updatedWeeklySchedules[week - 1].schedule.length === 0) {
+        updatedWeeklySchedules.splice(week - 1, 1);
+      }
+  
       return { ...prevDetails, weeklySchedules: updatedWeeklySchedules };
     });
   };
+  
+  const handleScheduleChange = (e, day, week) => {
+    const { name, value } = e.target;
+  
+    setCourseDetails((prevDetails) => {
+      const updatedWeeklySchedules = [...prevDetails.weeklySchedules];
+      if (!updatedWeeklySchedules[week - 1]) {
+        updatedWeeklySchedules[week - 1] = { startDate: "", endDate: "", schedule: [] };
+      }
+      const updatedSchedule = updatedWeeklySchedules[week - 1].schedule.map(item =>
+        item.day === day ? { ...item, [name]: value } : item
+      );
+  
+      updatedWeeklySchedules[week - 1].schedule = updatedSchedule;
+      if (updatedWeeklySchedules[week - 1].schedule.length === 0) {
+        updatedWeeklySchedules.splice(week - 1, 1);
+      }
+  
+      return { ...prevDetails, weeklySchedules: updatedWeeklySchedules };
+    });
+  };
+  
+  
 
   const handleWeekChange = (e) => {
     const selectedWeek = parseInt(e.target.value);
-    setCourseDetails((prevDetails) => ({
-      ...prevDetails,
-      selectedWeek,
-    }));
+    if (selectedWeek >= 1 && selectedWeek <= courseDetails.weeklySchedules.length) {
+      setCourseDetails((prevDetails) => ({
+        ...prevDetails,
+        selectedWeek,
+      }));
+    } else {
+      setCourseDetails((prevDetails) => ({
+        ...prevDetails,
+        selectedWeek: 1,
+      }));
+    }
   };
+  
 
   const updateCourse = async () => {
     const { title, startDate, endDate, description, weeklySchedules } = courseDetails;
@@ -156,7 +176,7 @@ const EducatorEditCourse = ({
   return (
     <div className="edit-course-containerr">
       <main className="edit-course-mainn">
-        <div className="form-headerr">Edit Course</div>
+        <div className="form-headerredit">Edit Course</div>
         <div className="form-contentt">
           <div className="input-groupp">
             <input

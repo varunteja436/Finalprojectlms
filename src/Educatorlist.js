@@ -33,9 +33,14 @@ const EducatorList = () => {
     <div className="educator-list-container">
       <aside>
         <ul>
+          <li><Link to="/dashboard">Home</Link></li>
+        </ul>
+        <ul>
           <li>
             <Link to="/educatorlist">Educator List</Link>
           </li>
+        </ul>
+        <ul>
           <li>
             <Link to="/">Logout</Link>
           </li>

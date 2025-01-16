@@ -35,8 +35,12 @@ aside ul li a:hover {
 }
 
 .student-dashboard-main header h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  background-color: #3498db;
+  color: white;
+  margin-left: -60px;
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
 }
 
 
