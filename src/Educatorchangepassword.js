@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, updatePassword } from "firebase/auth";
 import { ref, update } from "firebase/database";
 import { db } from "./firebase";
-import "./Educatorchangepassword.css";
+import "./Educatorchangepassword.css"; 
 
 const EducatorChangePassword = () => {
   const navigate = useNavigate();
@@ -43,24 +43,29 @@ const EducatorChangePassword = () => {
 
   return (
     <div className="educator-change-password-container">
-      <div className="welcomenotes">
-        <h1>Welcome to the Learning Management System</h1>
-        <span className="username-highlight">"{user?.displayName || 'Educator'}"</span>
-        <p>As a first-time user, please change your password to secure your account.</p>
-      </div>
-      <div className="change-password-form">
-        <h1>Change Password</h1>
-        <input
-          type="password"
-          placeholder="Enter New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="input-field"
-        />
-        {error && <p className="error-text">{error}</p>}
-        <button onClick={handlePasswordChange} className="submit-button">
-          Update Password
-        </button>
+      <div className="educator-change-password-wrapper">
+        <div className="educator-change-password-form-container">
+          <div className="educator-change-password-header">Change Password</div>
+          <p className="welcome-text">
+            Welcome <span className="username-highlight">"{user?.displayName || "Educator"}"</span>
+          </p>
+          <p className="welcome-textmessage">
+            Please update your password to secure your account.
+          </p>
+          <div className="input-wrapper">
+            <input
+              type="password"
+              placeholder="Enter New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="educator-change-password-input"
+            />
+          </div>
+          {error && <p className="error-message">{error}</p>}
+          <button onClick={handlePasswordChange} className="educator-change-password-button">
+            Update Password
+          </button>
+        </div>
       </div>
     </div>
   );
