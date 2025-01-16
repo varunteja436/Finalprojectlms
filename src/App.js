@@ -11,6 +11,7 @@ import Educatorprofile from "./Educatorprofile";
 import EducatorCreateCourse from "./EducatorCreateCourse";
 import EducatorEditCourse from "./EducatorEditCourse";
 import EducatorCourseList from "./EducatorCourseList";
+import Educatorchangepassword from "./Educatorchangepassword";
 import ForgotPassword from "./forgotpassword";
 import Studentprofile from "./Studentprofile";
 import "./App.css";
