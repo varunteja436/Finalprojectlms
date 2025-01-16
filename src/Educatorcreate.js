@@ -81,57 +81,83 @@ const CreateEducator = () => {
         <header>
           <h1>Create Educator</h1>
         </header>
-        <input
-          type="text"
-          name="fullname"
-          placeholder="Full Name"
-          value={educatorData.fullname}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <input
-          type="text"
-          name="age"
-          placeholder="Age"
-          value={educatorData.age}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <input
-          type="text"
-          name="number"
-          placeholder="Phone Number"
-          value={educatorData.number}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={educatorData.email}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={educatorData.password}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <input
-          type="text"
-          name="qualification"
-          placeholder="Qualification"
-          value={educatorData.qualification}
-          onChange={handleInputChange}
-          className="input-field"
-        />
-        <button onClick={registerEducator} className="submit-button">
-          Register Educator
-        </button>
+        <div className="form-container">
+          <div className="form-group">
+            <label htmlFor="fullname">Full Name</label>
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="Enter Full Name"
+              value={educatorData.fullname}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="age">Age</label>
+            <input
+              type="text"
+              id="age"
+              name="age"
+              placeholder="Enter Age"
+              value={educatorData.age}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="number">Phone Number</label>
+            <input
+              type="text"
+              id="number"
+              name="number"
+              placeholder="Enter Phone Number"
+              value={educatorData.number}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter Email"
+              value={educatorData.email}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter Password"
+              value={educatorData.password}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="qualification">Qualification</label>
+            <input
+              type="text"
+              id="qualification"
+              name="qualification"
+              placeholder="Enter Qualification"
+              value={educatorData.qualification}
+              onChange={handleInputChange}
+              className="input-field"
+            />
+          </div>
+          <button onClick={registerEducator} className="submit-button">
+            Register Educator
+          </button>
+        </div>
       </main>
     </div>
   );
