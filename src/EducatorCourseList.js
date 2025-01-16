@@ -162,27 +162,30 @@ const EducatorCourseList = () => {
 
   console.log("Show Course Details:", showCourseDetails);  
 
-  return (
-    <>
-      <aside>
-        <ul>
-          <li><Link to="/educatorprofile">Profile</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/educatorCourseList">Course List</Link></li>
-        </ul>
-      </aside>
-      {courseContainer}
-      {showCourseEditForm && showCourseDetails && (
-        <EducatorEditCourse
-          showCourseDetails={showCourseDetails}  
-          setShowCourseEditForm={setShowCourseEditForm}
-          setShowCourseDetails={setShowCourseDetails}
-          fetchAllCourses={fetchAllCourses}
-        />
-      )}
-    </>
-  );
-};
+    return (
+      <>
+        <aside>
+          <ul>
+            <li><Link to="/educatorprofile">Profile</Link></li>
+          </ul>
+          <ul>
+            <li><Link to="/educatorCourseList">Course List</Link></li>
+          </ul>
+          <ul>
+            <li><Link to="/">logout</Link></li>
+          </ul>
+        </aside>
+        {courseContainer}
+        {showCourseEditForm && showCourseDetails && (
+          <EducatorEditCourse
+            showCourseDetails={showCourseDetails}
+            setShowCourseEditForm={setShowCourseEditForm}
+            setShowCourseDetails={setShowCourseDetails}
+            fetchAllCourses={fetchAllCourses}
+          />
+        )}
+      </>
+    );
+  };
 
 export default EducatorCourseList;

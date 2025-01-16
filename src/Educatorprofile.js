@@ -47,6 +47,9 @@ const EducatorProfile = () => {
         <ul>
             <li><Link to="/educatorCourseList">Course List</Link></li>
         </ul>
+        <ul>
+            <li><Link to="/">Logout</Link></li>
+        </ul>
       </aside>
       <main className="educator-profile-main">
         <header>

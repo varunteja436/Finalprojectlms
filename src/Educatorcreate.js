@@ -75,6 +75,7 @@ const CreateEducator = () => {
           <li><Link to="/educatorlist">Educatorlist</Link></li>
           <li><Link to="/">Logout</Link></li>
         </ul>
+        
       </aside>
       <main className="educator-list-main">
         <header>
