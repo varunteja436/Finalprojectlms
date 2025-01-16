@@ -6,14 +6,14 @@ import Educatorlist from "./Educatorlist";
 import Educatorcreate from "./Educatorcreate"; 
 import Registration from "./Registration"; 
 import StudentDashboard from "./StudentDashboard";
-import Studentprofile from "./Studentprofile"; 
 import EducatorDashboard from "./Educatordashboard";
 import Educatorprofile from "./Educatorprofile";
 import EducatorCreateCourse from "./EducatorCreateCourse";
 import EducatorEditCourse from "./EducatorEditCourse";
 import EducatorCourseList from "./EducatorCourseList";
-import ForgotPassword from "./forgotpassword";
 import Educatorchangepassword from "./Educatorchangepassword";
+import ForgotPassword from "./forgotpassword";
+import Studentprofile from "./Studentprofile";
 import "./App.css";
 
 function App() {

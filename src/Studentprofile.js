@@ -22,7 +22,6 @@ const StudentProfile = () => {
       try {
         const studentRef = ref(db, `users/${currentUser.uid}`);
         const snapshot = await get(studentRef);
-
         if (snapshot.exists()) {
           setStudent(snapshot.val());
           setUpdatedStudent(snapshot.val());
@@ -43,42 +42,31 @@ const StudentProfile = () => {
 
   const validateFields = () => {
     const nameRegex = /^[a-zA-Z\s]+$/;
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10}$/;
-    const ageRegex = /^[1-9][0-9]?$/; 
+    const ageRegex = /^[1-9][0-9]?$/;
 
     if (!nameRegex.test(updatedStudent.name)) {
       alert("Please enter a valid name (only letters and spaces).");
       return false;
     }
-
     if (!emailRegex.test(updatedStudent.email)) {
       alert("Please enter a valid email address.");
       return false;
     }
-
     if (!ageRegex.test(updatedStudent.age)) {
       alert("Please enter a valid age (1-99).");
       return false;
     }
-
     if (!phoneRegex.test(updatedStudent.number)) {
       alert("Please enter a valid phone number (10 digits).");
       return false;
     }
-
     return true;
   };
 
   const handleUpdate = async () => {
-    if (!updatedStudent.name || !updatedStudent.email || !updatedStudent.age || !updatedStudent.number) {
-      alert("All fields are required!");
-      return;
-    }
-
-    if (!validateFields()) {
-      return;
-    }
+    if (!validateFields()) return;
 
     try {
       const studentRef = ref(db, `users/${currentUser.uid}`);
@@ -98,11 +86,9 @@ const StudentProfile = () => {
 
   return (
     <div className="student-profile-container">
-      <aside>
+      <aside className="sidebar">
         <ul>
           <li><Link to="/studentprofile">View Profile</Link></li>
-        </ul>
-        <ul>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>
@@ -112,7 +98,7 @@ const StudentProfile = () => {
         </header>
         <section className="student-details-section">
           {isEditing ? (
-            <div>
+            <form>
               <input
                 type="text"
                 name="name"
@@ -141,9 +127,9 @@ const StudentProfile = () => {
                 onChange={handleChange}
                 placeholder="Phone Number"
               />
-              <button onClick={handleUpdate}>Update Profile</button>
-              <button onClick={() => setIsEditing(false)}>Cancel</button>
-            </div>
+              <button type="button" onClick={handleUpdate}>Save Changes</button>
+              <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+            </form>
           ) : (
             <div>
               <table>
