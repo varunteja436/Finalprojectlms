@@ -3,27 +3,6 @@
     height: 100vh;
   }
   
-  .admin-view-students-container aside {
-    width: 20%; 
-    background-color: #2c3e50;
-    color: white;
-    padding: 10px;
-  }
-  
-  .admin-view-students-container aside ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .admin-view-students-container aside ul li {
-    margin: 15px 0;
-  }
-  
-  .admin-view-students-container aside ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
   .admin-view-students-main {
     flex-grow: 1;
     padding: 20px;
@@ -32,10 +11,9 @@
     flex-direction: column;
     align-items: center;
   }
-  
   .admin-view-students-section {
-    width: 80%; 
-    margin-left:40%;
+    width: 70%;
+    margin-left: 15%;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -43,6 +21,7 @@
   }
   
   .admin-view-students-section table {
+    margin-left: 10px;
     width: 100%;
     border-collapse: collapse;
   }
@@ -58,9 +37,31 @@
     background-color: #3498db;
     color: white;
     font-size: 16px;
+    width: 30%;
   }
   
   .admin-view-students-section td {
     font-size: 14px;
     vertical-align: middle;
+    width: 70%;
   }
+  
+  .suspend-btn {
+    background-color: red;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .active-student-btn {
+    background-color: green;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
