@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDatabase, ref, get } from "firebase/database";
 import { Link, useNavigate } from "react-router-dom";
-import "./AdminViewStudents.css";
+
 
 const AdminViewStudents = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const AdminViewStudents = () => {
         const data = await get(usersRef);
 
         if (data.exists()) {
-          const allUsers = snapshot.val();
+          const allUsers = data.val();
           const students = {};
 
           for (const uid in allUsers) {
@@ -39,7 +39,7 @@ const AdminViewStudents = () => {
       <aside>
         <ul>
           <li>
-            <Link to="/admindashboard">Home</Link>
+            <Link to="/dashboard">Home</Link>
           </li>
         </ul>
         <ul>
