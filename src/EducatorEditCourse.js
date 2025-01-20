@@ -56,14 +56,14 @@ const EducatorEditCourse = ({
         updatedWeeklySchedules[week - 1] = { startDate: "", endDate: "", schedule: [] };
       }
   
-      // Add or remove the day for the specific week
+
       if (isChecked) {
         updatedWeeklySchedules[week - 1].schedule.push({ day, startTime: "", endTime: "" });
       } else {
         updatedWeeklySchedules[week - 1].schedule = updatedWeeklySchedules[week - 1].schedule.filter(item => item.day !== day);
       }
   
-      // Remove the week if it has no schedule days left
+
       if (updatedWeeklySchedules[week - 1].schedule.length === 0) {
         updatedWeeklySchedules.splice(week - 1, 1);
       }
