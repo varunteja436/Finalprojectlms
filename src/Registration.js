@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { set, ref } from "firebase/database";
 import './Registration.css';
-import { updateProfile } from "firebase/auth";
+
 
 
 const Registration = () => {
