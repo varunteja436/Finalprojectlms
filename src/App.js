@@ -14,7 +14,13 @@ import EducatorCourseList from "./EducatorCourseList";
 import Educatorchangepassword from "./Educatorchangepassword";
 import ForgotPassword from "./forgotpassword";
 import Studentprofile from "./Studentprofile";
+import StudentCourse from "./StudentCourse";
+import StudentEnrolledCourse from "./StudentEnrolledCourse";
+import StudentUnenrolledCourse from "./StudentUnenrolledCourse";
 import AdminViewStudents from "./Adminviewstudents";
+import AdminEditEducator from "./Adminediteducator";
+import Educatormyassignments from "./Educatormyassignments";
+import Educatorcreateassignment from "./Educatorcreateassignment";
 import "./App.css";
 
 function App() {
@@ -29,6 +35,9 @@ function App() {
           <Route path="/educatorcreate" element={<Educatorcreate />} />
           <Route path="/studentdashboard" element={<StudentDashboard />} />
           <Route path="/studentprofile" element={<Studentprofile />} />
+          <Route path="/studentcourse" element={<StudentCourse />} />
+          <Route path="/studentenrolledcourse" element={<StudentEnrolledCourse />} />
+          <Route path="/studentunenrolledcourse" element={<StudentUnenrolledCourse />} />
           <Route path="/educatordashboard" element={<EducatorDashboard />} />
           <Route path="/educatorprofile" element={<Educatorprofile />} />
           <Route path="/educatorcreatecourse" element={<EducatorCreateCourse />} />
@@ -37,6 +46,9 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/educatorchangepassword" element={<Educatorchangepassword />} />
           <Route path="/adminviewstudents" element={<AdminViewStudents />} />
+          <Route path="/adminediteducator" element={<AdminEditEducator />} />
+          <Route path="/educatormyassignments" element={<Educatormyassignments />} />
+          <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,0 +1,99 @@
+ .student-courses-container {
+    display: flex;
+  }
+  
+  .student-courses-sidebar {
+    flex: 0.2;
+  }
+  .student-courses-main {
+    flex: 1;
+  }
+  
+  .student-courses-header {
+    height: 100px;
+    background: #3498db;
+    padding-left: 30px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .student-courses-title {
+    font-size: 42px;
+    color: white;
+  }
+  
+  .card-wrapper-enrolled-courses {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .student-enrolled-courses-card {
+    border: 1px solid;
+    border-radius: 20px;
+    width: 240px;
+    height: 140px;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .student-enrolled-courses-btn {
+    height: 25px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .student-enrolledcourse-card {
+    border: 1px solid;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    width: 280px;
+    height: 130px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .student-enrolledcourse-title {
+    font-size: 28px;
+    font-weight: 500;
+    text-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+  }
+
+  .assignment-submit-btn-style {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .student-enrolledcourse-btn {
+    background-color: #007bff; 
+    color: #ffffff; 
+    border: none; 
+    border-radius: 4px;
+    padding: 10px 20px; 
+    font-size: 16px; 
+    cursor: pointer;
+    width: 40%;
+  } 

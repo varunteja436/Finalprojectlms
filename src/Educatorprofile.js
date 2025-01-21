@@ -6,7 +6,7 @@ import { db } from "./firebase";
 import "./Educatorprofile.css";
 
 const EducatorProfile = () => {
-  const [educator, setEducator] = useState(null);
+  const [educator, setEducator] = useState(null); 
   const auth = getAuth();
   const currentUser = auth.currentUser;
 
@@ -35,25 +35,42 @@ const EducatorProfile = () => {
   }, [currentUser]);
 
   if (!educator) {
-    return <div>Loading educator profile...</div>;
+    return (
+      <div className="educator-profile-container">
+        <p>Loading educator details...</p>
+      </div>
+    );
   }
 
   return (
     <div className="educator-profile-container">
       <aside>
-        <ul>
-          <li><Link to="/educatordashboard">Home</Link></li>
-        </ul>
-        <ul>
-            <li><Link to="/educatorprofile">Profile</Link></li>
-        </ul>
-        <ul>
-            <li><Link to="/educatorCourseList">Course List</Link></li>
-        </ul>
-        <ul>
-            <li><Link to="/">Logout</Link></li>
-        </ul>
-      </aside>
+                <ul>
+                  <li>
+                    <Link to="/educatordashboard">Home</Link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <Link to="/educatorprofile">Profile</Link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <Link to="/educatorCourseList">Course List</Link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <Link to="/educatormyassignments">My Assignments</Link>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <Link to="/">Logout</Link>
+                  </li>
+                </ul>
+              </aside>
       <main className="educator-profile-main">
         <header>
           <h1>Educator Profile</h1>
@@ -71,15 +88,15 @@ const EducatorProfile = () => {
               </tr>
               <tr>
                 <th>Age</th>
-                <td>{educator.age}</td>
+                <td>{educator.age || "N/A"}</td>
               </tr>
               <tr>
                 <th>Phone Number</th>
-                <td>{educator.number}</td>
+                <td>{educator.number || "N/A"}</td>
               </tr>
               <tr>
                 <th>Qualification</th>
-                <td>{educator.qualification}</td>
+                <td>{educator.qualification || "N/A"}</td>
               </tr>
             </tbody>
           </table>
