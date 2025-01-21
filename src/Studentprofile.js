@@ -80,23 +80,19 @@ const StudentProfile = () => {
     }
   };
 
-  if (!student) {
-    return <div>Loading student profile...</div>;
-  }
-
   return (
     <div className="student-profile-container">
       <aside className="sidebar">
-          <ul>
-            <li><Link to="/studentdashboard">Home</Link></li>
-          </ul>
-          <ul>
+        <ul>
+          <li><Link to="/studentdashboard">Home</Link></li>
+        </ul>
+        <ul>
           <li><Link to="/studentprofile">View Profile</Link></li>
-          </ul>
-          <ul>
-            <li><Link to="/studentcourse">View Courses</Link></li>
-          </ul>
-          <ul>
+        </ul>
+        <ul>
+          <li><Link to="/studentcourse">View Courses</Link></li>
+        </ul>
+        <ul>
           <li><Link to="/">Logout</Link></li>
         </ul>
       </aside>
@@ -105,63 +101,67 @@ const StudentProfile = () => {
           <h1>Student Profile</h1>
         </header>
         <section className="student-details-section">
-          {isEditing ? (
-            <form>
-              <input
-                type="text"
-                name="name"
-                value={updatedStudent.name}
-                onChange={handleChange}
-                placeholder="Full Name"
-              />
-              <input
-                type="email"
-                name="email"
-                value={updatedStudent.email}
-                onChange={handleChange}
-                placeholder="Email"
-              />
-              <input
-                type="number"
-                name="age"
-                value={updatedStudent.age}
-                onChange={handleChange}
-                placeholder="Age"
-              />
-              <input
-                type="text"
-                name="number"
-                value={updatedStudent.number}
-                onChange={handleChange}
-                placeholder="Phone Number"
-              />
-              <button type="button" onClick={handleUpdate}>Save Changes</button>
-              <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
-            </form>
+          {student ? (
+            isEditing ? (
+              <form>
+                <input
+                  type="text"
+                  name="name"
+                  value={updatedStudent.name}
+                  onChange={handleChange}
+                  placeholder="Full Name"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  value={updatedStudent.email}
+                  onChange={handleChange}
+                  placeholder="Email"
+                />
+                <input
+                  type="number"
+                  name="age"
+                  value={updatedStudent.age}
+                  onChange={handleChange}
+                  placeholder="Age"
+                />
+                <input
+                  type="text"
+                  name="number"
+                  value={updatedStudent.number}
+                  onChange={handleChange}
+                  placeholder="Phone Number"
+                />
+                <button type="button" onClick={handleUpdate}>Save Changes</button>
+                <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+              </form>
+            ) : (
+              <div>
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>Full Name</th>
+                      <td>{student.name}</td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td>{student.email}</td>
+                    </tr>
+                    <tr>
+                      <th>Age</th>
+                      <td>{student.age}</td>
+                    </tr>
+                    <tr>
+                      <th>Phone Number</th>
+                      <td>{student.number}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+              </div>
+            )
           ) : (
-            <div>
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Full Name</th>
-                    <td>{student.name}</td>
-                  </tr>
-                  <tr>
-                    <th>Email</th>
-                    <td>{student.email}</td>
-                  </tr>
-                  <tr>
-                    <th>Age</th>
-                    <td>{student.age}</td>
-                  </tr>
-                  <tr>
-                    <th>Phone Number</th>
-                    <td>{student.number}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-            </div>
+            <p>Loading student details...</p>
           )}
         </section>
       </main>

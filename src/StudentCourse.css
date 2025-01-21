@@ -1,0 +1,104 @@
+.student-course-container {
+    display: flex;
+  }
+  
+  .student-course-sidebar {
+    flex: 0.2;
+  }
+  
+  .student-course-main {
+    flex: 1;
+  }
+  
+  .student-course-header {
+    height: 100px;
+    background: #3498db;
+    padding-left: 30px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .student-course-title {
+    font-size: 42px;
+    color: white;
+  }
+  
+  .unenrolled-course-wrapper {
+    margin: 20px;
+  }
+  
+  .unenrolled-course-wrapper-title {
+    font-size: 22px;
+    padding-bottom: 20px;
+  }
+  
+  .unenrolled-course-card-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .student-unenrolledcourse-card {
+    border: 1px solid;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    width: 250px;
+    height: 130px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .student-unenrolledcourse-name {
+    font-size: 28px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  
+  .student-unenrolledcourse-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .student-unenrolledcourse-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .student-enrolled-course {
+    margin: 20px 0;
+  }
+  
+  .stu-enrolledcourse-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .student-enrolledcourse-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .divider {
+    margin: 20px 0;
+  }
+  
