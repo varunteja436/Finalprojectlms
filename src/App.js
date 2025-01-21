@@ -14,6 +14,7 @@ import EducatorCourseList from "./EducatorCourseList";
 import Educatorchangepassword from "./Educatorchangepassword";
 import ForgotPassword from "./forgotpassword";
 import Studentprofile from "./Studentprofile";
+import StudentCourse from "./StudentCourse";
 import AdminViewStudents from "./Adminviewstudents";
 import AdminEditEducator from "./Adminediteducator";
 import Educatormyassignments from "./Educatormyassignments";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/educatorcreate" element={<Educatorcreate />} />
           <Route path="/studentdashboard" element={<StudentDashboard />} />
           <Route path="/studentprofile" element={<Studentprofile />} />
+          <Route path="/studentcourse" element={<StudentCourse />} />
           <Route path="/educatordashboard" element={<EducatorDashboard />} />
           <Route path="/educatorprofile" element={<Educatorprofile />} />
           <Route path="/educatorcreatecourse" element={<EducatorCreateCourse />} />
