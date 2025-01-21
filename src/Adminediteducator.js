@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getDatabase, ref, get } from "firebase/database";
-
+import "./AdminEditEducator.css";
 
 const AdminEditEducator = () => {
   const location = useLocation();
@@ -51,11 +51,30 @@ const AdminEditEducator = () => {
           {educatorDetails ? (
             <div>
               <h2>Educator Details</h2>
-              <p><strong>Name:</strong> {educatorDetails.name}</p>
-              <p><strong>Email:</strong> {educatorDetails.email}</p>
-              <p><strong>Age:</strong> {educatorDetails.age}</p>
-              <p><strong>Phone:</strong> {educatorDetails.number}</p>
-              <p><strong>Qualification:</strong> {educatorDetails.qualification}</p>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Full Name</th>
+                    <td>{educatorDetails.name}</td>
+                  </tr>
+                  <tr>
+                    <th>Email</th>
+                    <td>{educatorDetails.email}</td>
+                  </tr>
+                  <tr>
+                    <th>Age</th>
+                    <td>{educatorDetails.age}</td>
+                  </tr>
+                  <tr>
+                    <th>Phone Number</th>
+                    <td>{educatorDetails.number}</td>
+                  </tr>
+                  <tr>
+                    <th>Qualification</th>
+                    <td>{educatorDetails.qualification}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           ) : (
             <p>Loading educator details...</p>
