@@ -28,8 +28,6 @@ const EducatorCreateAssignment = () => {
   useEffect(() => {
     const fetchAllCourses = async () => {
       try {
-        const auth = getAuth();
-        const user = auth.currentUser;
         const coursesRef = ref(db, "courses");
         const data = await get(coursesRef);
 
@@ -61,14 +59,16 @@ const EducatorCreateAssignment = () => {
   }, [user]);
 
   const submitAssignment = async () => {
+    if (!newAssignmentDetails.assignmentTitle || !newAssignmentDetails.submissionDate || !newAssignmentDetails.courseId) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     const database = getDatabase();
     const assignmentsRef = ref(database, "assignments");
 
     try {
-      const courseRef = ref(
-        database,
-        ('courses/${newAssignmentDetails.courseId}')
-      );
+      const courseRef = ref(database, `courses/${newAssignmentDetails.courseId}`);
       const coursedata = await get(courseRef);
 
       if (!coursedata.exists()) {
@@ -79,10 +79,10 @@ const EducatorCreateAssignment = () => {
       const courseDetails = coursedata.val();
       const newAssignmentWithCourse = {
         ...newAssignmentDetails,
-        uid: push(assignmentsRef).key, 
+        uid: push(assignmentsRef).key,
         educatorUid: user?.uid,
         createdAt: Date.now(),
-        courseDetails: courseDetails, 
+        courseDetails: courseDetails,
       };
 
       const newAssignmentRef = push(assignmentsRef);
@@ -91,9 +91,8 @@ const EducatorCreateAssignment = () => {
       alert("Assignment submitted successfully!");
       navigate("/educatormyassignments");
     } catch (error) {
-      console.error("Error submitting assignment:", error.message);
+      console.error("Error submitting assignment:", error);  
       alert("Failed to submit assignment. Please try again.");
-      return null;
     }
   };
 
@@ -128,9 +127,7 @@ const EducatorCreateAssignment = () => {
       </aside>
       <div className="form-containerr1">
         <main className="form-mainn1">
-            <header className="header2">
-                Educator Add Assignments
-            </header>
+          <header className="header2">Educator Add Assignments</header>
           <div className="form-headerr1">Add Assignment</div>
           <div className="form-contentt1">
             <div className="input-groupp1">
