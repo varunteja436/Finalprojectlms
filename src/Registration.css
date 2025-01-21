@@ -1,4 +1,4 @@
-/* Main container with background image */
+
 .registration-container {
     background-image: url('./cl.jpeg');
     background-repeat: no-repeat;
@@ -6,9 +6,9 @@
     background-position: center;
     height: 100%;
     width: 100%;
+    position: fixed;
   }
   
-  /* Wrapper to center the form */
   .registration-wrapper {
     width: 100%;
     display: flex;
@@ -16,7 +16,6 @@
     height: 100%;
   }
   
-  /* Form container styling */
   .registration-form-container {
     display: flex;
     flex-direction: column;
@@ -27,7 +26,6 @@
     width: 40%;
   }
   
-  /* Header styling */
   .registration-header {
     font-weight: 800;
     font-size: 50px;
@@ -36,7 +34,6 @@
     color: #fff;
   }
   
-  /* Input field styling */
   .registration-input {
     height: 48px;
     width: 90%;
@@ -47,7 +44,6 @@
     margin-bottom: 16px;
   }
   
-  /* Button styling */
   .registration-button {
     font-size: 40px;
     width: 80%;
@@ -59,7 +55,6 @@
     cursor: pointer;
   }
   
-  /* Footer text styling */
   .registration-footer-text {
     font-weight: 300;
     font-size: 20px;

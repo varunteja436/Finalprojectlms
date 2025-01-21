@@ -6,14 +6,18 @@ import Educatorlist from "./Educatorlist";
 import Educatorcreate from "./Educatorcreate"; 
 import Registration from "./Registration"; 
 import StudentDashboard from "./StudentDashboard";
-import Studentprofile from "./Studentprofile"; 
 import EducatorDashboard from "./Educatordashboard";
 import Educatorprofile from "./Educatorprofile";
 import EducatorCreateCourse from "./EducatorCreateCourse";
 import EducatorEditCourse from "./EducatorEditCourse";
 import EducatorCourseList from "./EducatorCourseList";
-import ForgotPassword from "./forgotpassword";
 import Educatorchangepassword from "./Educatorchangepassword";
+import ForgotPassword from "./forgotpassword";
+import Studentprofile from "./Studentprofile";
+import AdminViewStudents from "./Adminviewstudents";
+import AdminEditEducator from "./Adminediteducator";
+import Educatormyassignments from "./Educatormyassignments";
+import Educatorcreateassignment from "./Educatorcreateassignment";
 import "./App.css";
 
 function App() {
@@ -35,6 +39,10 @@ function App() {
           <Route path="/educatorCourseList" element={<EducatorCourseList />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/educatorchangepassword" element={<Educatorchangepassword />} />
+          <Route path="/adminviewstudents" element={<AdminViewStudents />} />
+          <Route path="/adminediteducator" element={<AdminEditEducator />} />
+          <Route path="/educatormyassignments" element={<Educatormyassignments />} />
+          <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
         </Routes>
       </div>
     </BrowserRouter>

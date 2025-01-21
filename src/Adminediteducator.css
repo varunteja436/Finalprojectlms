@@ -1,4 +1,4 @@
-.educator-profile-container {
+.admin-educator-profile-container {
     display: flex;
     height: 100vh;
   }
@@ -33,13 +33,13 @@
     color: #f39c12;
   }
   
-  .educator-profile-main {
+  .admin-educator-profile-main {
     flex-grow: 1;
     padding: 20px;
     background-color: #ecf0f1;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
   }
   
   header {
@@ -52,43 +52,57 @@
     border-radius: 8px;
   }
   
-  .educator-details-section {
-    width: 70%;
-    margin-left:15%;
+  .admin-educator-edit-btn {
+    padding: 10px 24px;
+    width: 150px;
+    font-size: 16px;
+    background: #3498db;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 40%;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-educator-details-section {
+    width: 100%;
+    margin-left: 15%;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .educator-details-section table {
-    margin-left:10px;
+  .admin-educator-details-section table {
+    margin-left: 10px;
     width: 100%;
     border-collapse: collapse;
   }
   
-  .educator-details-section th,
-  .educator-details-section td {
+  .admin-educator-details-section th,
+  .admin-educator-details-section td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
   }
   
-  .educator-details-section th {
+  .admin-educator-details-section th {
     background-color: #3498db;
     color: white;
     font-size: 16px;
     width: 30%;
   }
   
-  .educator-details-section td {
+  .admin-educator-details-section td {
     font-size: 14px;
     vertical-align: middle;
-    width: 70%; 
+    width: 70%;
   }
   
   @media screen and (max-width: 768px) {
-    .educator-profile-container {
+    .admin-educator-profile-container {
       flex-direction: column;
     }
   
@@ -97,7 +111,7 @@
       margin-bottom: 20px;
     }
   
-    .educator-details-section {
+    .admin-educator-details-section {
       width: 90%;
     }
   
@@ -107,3 +121,4 @@
       padding: 10px;
     }
   }
+  

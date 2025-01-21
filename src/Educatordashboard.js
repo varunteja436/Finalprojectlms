@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { ref, get } from "firebase/database";
@@ -6,12 +6,13 @@ import { db } from "./firebase";
 import "./Educatordashboard.css";
 
 const EducatorDashboard = () => {
+  const [educatorName, setEducatorName] = useState(""); 
   const navigate = useNavigate();
   const auth = getAuth();
-  const currentUser = auth.currentUser;
 
   useEffect(() => {
     const checkFirstTimeLogin = async () => {
+      const currentUser = auth.currentUser;
       if (!currentUser) {
         alert("No user is logged in.");
         navigate("/");
@@ -25,6 +26,9 @@ const EducatorDashboard = () => {
         const userData = snapshot.val();
         if (userData.firstTimeLogin) {
           navigate("/educatorchangepassword");
+        } else {
+
+          setEducatorName(userData.name || "Educator");
         }
       } else {
         alert("User profile not found.");
@@ -33,25 +37,34 @@ const EducatorDashboard = () => {
     };
 
     checkFirstTimeLogin();
-  }, [currentUser, navigate]);
+  }, [auth, navigate]);
 
   return (
     <div className="educator-dashboard-container">
-      <aside>
-        <ul>
-          <li><Link to="/educatorprofile">Profile</Link></li>
-          <li><Link to="/educatorCourseList">Course List</Link></li>
-        </ul>
-      </aside>
-      <main className="educator-dashboard-main">
-        <header>
-          <h1>Educator Dashboard</h1>
-        </header>
-        <section className="educator-dashboard-content">
-          <h1>Welcome, Educator!</h1>
-        </section>
-      </main>
-    </div>
+    <aside>
+      <ul>
+        <li><Link to="/educatordashboard">Home</Link></li>
+      </ul>
+      <ul>
+        <li><Link to="/educatorprofile">Profile</Link></li>
+      </ul>
+      <ul>
+        <li><Link to="/educatorCourseList">Course List</Link></li>
+      </ul>
+      <ul><li><Link to="/educatormyassignments">My Assignments</Link></li></ul>
+      <ul>
+        <li><Link to="/">Logout</Link></li>
+      </ul>
+    </aside>
+    <main className="educator-dashboard-main">
+      <header>
+        <h1>Educator Dashboard</h1>
+      </header>
+      <section className="educator-dashboard-content">
+        <h1>Welcome, {educatorName}!</h1>
+      </section>
+    </main>
+  </div>
   );
 };
 

@@ -1,0 +1,67 @@
+.admin-view-students-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .admin-view-students-main {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .admin-view-students-section {
+    width: 70%;
+    margin-left: 15%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-view-students-section table {
+    margin-left: 10px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .admin-view-students-section th,
+  .admin-view-students-section td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .admin-view-students-section th {
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    width: 30%;
+  }
+  
+  .admin-view-students-section td {
+    font-size: 14px;
+    vertical-align: middle;
+    width: 70%;
+  }
+  
+  .suspend-btn {
+    background-color: red;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .active-student-btn {
+    background-color: green;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

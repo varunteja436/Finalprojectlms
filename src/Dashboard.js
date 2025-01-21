@@ -1,44 +1,85 @@
-import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
+import { getDatabase, ref, get } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Dashboard.css";
 
-const Dashboard = () => {
+
+const AdminDashboard = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const fetchUserProfile = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
 
-    if (!user) {
-      navigate("/"); 
-    } else {
-      setName(user.displayName || user.email || "User");
-    }
-  }, [navigate]);
+      if (!user) {
+        console.error("No user is logged in");
+        return;
+      }
 
+      const uid = user.uid;
+      const database = getDatabase();
+      const userRef = ref(database, `users/${uid}`);
 
+      try {
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          console.log("userDate", userData);
+          setName(userData.name);
+        } else {
+          console.error("No data available for this user.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserProfile();
+  }, []);
 
+  console.log("name", name);
 
   return (
-    <div className="dashboard-container">
+    <div className="admin-dashboard-container">
       <aside>
         <ul>
-          <li><Link to="/educatorlist">Educatorlist</Link></li>
-          <li><Link to="/">Logout</Link></li>
+          <li>
+            <Link to="/dashboard">Home</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/adminviewstudents">Student List</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/educatorlist">Educator List</Link>
+          </li>
+        </ul>
+
+        <ul>
+          <li>
+            <Link to="/adminprofile"> View Profile</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/">Logout</Link>
+          </li>
         </ul>
       </aside>
-      <main className="dashboard-main">
+      <main className="admin-dashboard-main">
         <header>
           <h1>Admin Dashboard</h1>
-          </header>   
-            <section className="dashboard-section">
-        <h1>Welcome Admin!</h1>
-        </section>
+        </header>
+        <div className="admin-details">
+          {name ? `Welcome, ${name}` : "Loading..."}
+        </div>
       </main>
     </div>
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

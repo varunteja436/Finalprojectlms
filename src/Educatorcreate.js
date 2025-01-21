@@ -25,8 +25,40 @@ const CreateEducator = () => {
   const registerEducator = async () => {
     const { fullname, age, number, email, password, qualification } = educatorData;
 
-    if (!fullname || !age || !number || !email || !password || !qualification) {
-      alert("Please fill in all fields.");
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const ageRegex = /^(?:[1-9][0-9]?|1[01][0-9]|120)$/;
+    const phoneRegex = /^[0-9]{10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const qualificationRegex = /^[a-zA-Z\s]+$/;
+
+    if (!fullname || !nameRegex.test(fullname)) {
+      alert("Please enter a valid full name (letters and spaces only).");
+      return;
+    }
+
+    if (!age || !ageRegex.test(age)) {
+      alert("Please enter a valid age (1-120).");
+      return;
+    }
+
+    if (!number || !phoneRegex.test(number)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    if (!email || !emailRegex.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    if (!password || !passwordRegex.test(password)) {
+      alert("Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.");
+      return;
+    }
+
+    if (!qualification || !qualificationRegex.test(qualification)) {
+      alert("Please enter a valid qualification (letters and spaces only).");
       return;
     }
 

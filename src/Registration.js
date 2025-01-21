@@ -6,6 +6,7 @@ import { set, ref } from "firebase/database";
 import './Registration.css';
 
 
+
 const Registration = () => {
   const navigate = useNavigate();
   const regexPatterns = {
@@ -59,9 +60,7 @@ const Registration = () => {
         uid: user.uid,
         courses: {},
       };
-
       await set(ref(db, "users/" + user.uid), userProfileData);
-
       navigate("/");
     } catch (error) {
       console.error("Error registering user: ", error.message);
