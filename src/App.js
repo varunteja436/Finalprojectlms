@@ -16,6 +16,8 @@ import ForgotPassword from "./forgotpassword";
 import Studentprofile from "./Studentprofile";
 import AdminViewStudents from "./Adminviewstudents";
 import AdminEditEducator from "./Adminediteducator";
+import Educatormyassignments from "./Educatormyassignments";
+import Educatorcreateassignment from "./Educatorcreateassignment";
 import "./App.css";
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
           <Route path="/educatorchangepassword" element={<Educatorchangepassword />} />
           <Route path="/adminviewstudents" element={<AdminViewStudents />} />
           <Route path="/adminediteducator" element={<AdminEditEducator />} />
+          <Route path="/educatormyassignments" element={<Educatormyassignments />} />
+          <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -51,6 +51,7 @@ const EducatorDashboard = () => {
       <ul>
         <li><Link to="/educatorCourseList">Course List</Link></li>
       </ul>
+      <ul><li><Link to="/educatormyassignments">My Assignments</Link></li></ul>
       <ul>
         <li><Link to="/">Logout</Link></li>
       </ul>
