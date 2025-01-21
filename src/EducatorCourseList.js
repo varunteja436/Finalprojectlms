@@ -165,19 +165,32 @@ const EducatorCourseList = () => {
     return (
       <>
         <aside>
-          <ul>
-            <li><Link to="/educatordashboard">Home</Link></li>
-          </ul>
-          <ul>
-            <li><Link to="/educatorprofile">Profile</Link></li>
-          </ul>
-          <ul>
-            <li><Link to="/educatorCourseList">Course List</Link></li>
-          </ul>
-          <ul>
-            <li><Link to="/">logout</Link></li>
-          </ul>
-        </aside>
+                  <ul>
+                    <li>
+                      <Link to="/educatordashboard">Home</Link>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <Link to="/educatorprofile">Profile</Link>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <Link to="/educatorCourseList">Course List</Link>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <Link to="/educatormyassignments">My Assignments</Link>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <Link to="/">Logout</Link>
+                    </li>
+                  </ul>
+                </aside>
         {courseContainer}
         {showCourseEditForm && showCourseDetails && (
           <EducatorEditCourse
