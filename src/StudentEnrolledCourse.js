@@ -18,7 +18,7 @@ const StudentEnrolledCourses = () => {
 
   const fetchEnrolledCourses = async (studentUid) => {
     const database = getDatabase();
-    const studentRef = ref(database, `students/${studentUid}`);
+    const studentRef = ref(database, `users/${studentUid}`);
 
     try {
       const snapshot = await get(studentRef);
