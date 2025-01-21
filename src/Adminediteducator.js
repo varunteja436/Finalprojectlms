@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {db} from "./firebase";
 import { getDatabase, ref, get, update } from "firebase/database";
+import './Adminediteducator.css';
 
 
 const AdminEditEducator = () => {
