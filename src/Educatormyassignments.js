@@ -8,7 +8,6 @@ import "./Educatormyassignments.css";
 const EducatorMyAssignments = () => {
   const navigate = useNavigate();
   const [allAssignments, setAllAssignments] = useState([]);
-
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -16,7 +15,6 @@ const EducatorMyAssignments = () => {
     const assignmentsRef = ref(db, "assignments");
 
     try {
-
       const assignmentsSnapshot = await get(assignmentsRef);
       if (!assignmentsSnapshot.exists()) {
         console.log("No assignments found");
@@ -24,7 +22,6 @@ const EducatorMyAssignments = () => {
       }
 
       const assignments = assignmentsSnapshot.val();
-
 
       const filteredAssignments = Object.keys(assignments)
         .filter(
@@ -43,7 +40,6 @@ const EducatorMyAssignments = () => {
         return;
       }
 
-
       setAllAssignments(filteredAssignments);
     } catch (error) {
       console.log("Error fetching assignments:", error);
@@ -55,7 +51,6 @@ const EducatorMyAssignments = () => {
       fetchAssignmentsByEducator(user.uid);
     }
   }, [user]);
-
 
   const addNewCourseButton = (
     <button
@@ -109,6 +104,18 @@ const EducatorMyAssignments = () => {
                     <div className="assignment-title">
                       {assignment.assignmentTitle}
                     </div>
+                    <div className="assignment-edit">
+                      <button
+                        className="assignment-edit-btn"
+                        onClick={() =>
+                          navigate("/educatorcreateassignment", {
+                            state: { assignmentId: assignment.assignmentId }
+                          })
+                        }
+                      >
+                        Edit
+                      </button>
+                    </div>
                     <div className="assignment-class">
                       Class: {assignment.courseDetails?.title}
                     </div>
@@ -124,7 +131,7 @@ const EducatorMyAssignments = () => {
                       className="view-progress-btn"
                       onClick={() =>
                         navigate("/dummy", {
-                          
+
                         })
                       }
                     >

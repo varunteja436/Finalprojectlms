@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { db } from "./firebase";
-import { get, getDatabase, push, ref, set } from "firebase/database";
+import { get, ref, set, push } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import "./Educatorcreateassignment.css";
 
 const EducatorCreateAssignment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -17,6 +18,8 @@ const EducatorCreateAssignment = () => {
     submissionDate: "",
     courseId: "",
   });
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleChange = (e) => {
     setNewAssignmentDetails({
@@ -55,47 +58,85 @@ const EducatorCreateAssignment = () => {
         console.error("Error fetching courses: ", error.message);
       }
     };
+
     fetchAllCourses();
-  }, [user]);
+    
+    if (location.state?.assignmentId) {
+      const fetchAssignmentDetails = async () => {
+        try {
+          const assignmentRef = ref(db, `assignments/${location.state.assignmentId}`);
+          const snapshot = await get(assignmentRef);
+          if (snapshot.exists()) {
+            const assignmentData = snapshot.val();
+            setNewAssignmentDetails({
+              assignmentTitle: assignmentData.assignmentTitle,
+              assignmentDescription: assignmentData.assignmentDescription,
+              submissionDate: assignmentData.submissionDate,
+              courseId: assignmentData.courseDetails.id,
+            });
+            setIsEditing(true);
+          }
+        } catch (error) {
+          console.error("Error fetching assignment details: ", error);
+        }
+      };
+      fetchAssignmentDetails();
+    }
+  }, [user, location.state?.assignmentId]);
 
   const submitAssignment = async () => {
     if (!newAssignmentDetails.assignmentTitle || !newAssignmentDetails.submissionDate || !newAssignmentDetails.courseId) {
       alert("Please fill in all required fields.");
       return;
     }
-
-    const database = getDatabase();
-    const assignmentsRef = ref(database, "assignments");
-
+  
+    if (!newAssignmentDetails.courseId) {
+      alert("Course ID is missing.");
+      return;
+    }
+  
     try {
-      const courseRef = ref(database, `courses/${newAssignmentDetails.courseId}`);
+      const assignmentsRef = ref(db, "assignments");
+      const courseRef = ref(db, `courses/${newAssignmentDetails.courseId}`);
       const coursedata = await get(courseRef);
-
+  
       if (!coursedata.exists()) {
         alert("Course not found!");
         return;
       }
-
+  
       const courseDetails = coursedata.val();
-      const newAssignmentWithCourse = {
-        ...newAssignmentDetails,
-        uid: push(assignmentsRef).key,
-        educatorUid: user?.uid,
-        createdAt: Date.now(),
-        courseDetails: courseDetails,
-      };
-
-      const newAssignmentRef = push(assignmentsRef);
-      await set(newAssignmentRef, newAssignmentWithCourse);
-
-      alert("Assignment submitted successfully!");
+  
+      if (isEditing) {
+        const assignmentRef = ref(db, `assignments/${location.state.assignmentId}`);
+        await set(assignmentRef, {
+          ...newAssignmentDetails,
+          educatorUid: user?.uid,
+          createdAt: Date.now(),
+          courseDetails: courseDetails,
+        });
+        alert("Assignment updated successfully!");
+      } else {
+        const newAssignmentWithCourse = {
+          ...newAssignmentDetails,
+          uid: push(assignmentsRef).key,
+          educatorUid: user?.uid,
+          createdAt: Date.now(),
+          courseDetails: courseDetails,
+        };
+  
+        const newAssignmentRef = push(assignmentsRef);
+        await set(newAssignmentRef, newAssignmentWithCourse);
+        alert("Assignment submitted successfully!");
+      }
+  
       navigate("/educatormyassignments");
     } catch (error) {
-      console.error("Error submitting assignment:", error);  
+      console.error("Error submitting assignment:", error);
       alert("Failed to submit assignment. Please try again.");
     }
   };
-
+  
   return (
     <>
       <aside>
@@ -127,8 +168,8 @@ const EducatorCreateAssignment = () => {
       </aside>
       <div className="form-containerr1">
         <main className="form-mainn1">
-          <header className="header2">Educator Add Assignments</header>
-          <div className="form-headerr1">Add Assignment</div>
+          <header className="header2">{isEditing ? "Update Assignment" : "Add Assignment"}</header>
+          <div className="form-headerr1">{isEditing ? "Edit Assignment" : "Add Assignment"}</div>
           <div className="form-contentt1">
             <div className="input-groupp1">
               <label className="input-label" htmlFor="assignmentTitle">
@@ -193,7 +234,7 @@ const EducatorCreateAssignment = () => {
             </div>
             <div className="button-containerr1">
               <button onClick={submitAssignment} className="submit-buttonn1">
-                Submit Assignment
+                {isEditing ? "Update Assignment" : "Submit Assignment"}
               </button>
               <button
                 onClick={() => navigate("/educatormyassignments")}
