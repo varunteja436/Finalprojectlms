@@ -15,6 +15,7 @@ import Educatorchangepassword from "./Educatorchangepassword";
 import ForgotPassword from "./forgotpassword";
 import Studentprofile from "./Studentprofile";
 import AdminViewStudents from "./Adminviewstudents";
+import AdminEditEducator from "./Adminediteducator";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/educatorchangepassword" element={<Educatorchangepassword />} />
           <Route path="/adminviewstudents" element={<AdminViewStudents />} />
+          <Route path="/adminediteducator" element={<AdminEditEducator />} />
         </Routes>
       </div>
     </BrowserRouter>
