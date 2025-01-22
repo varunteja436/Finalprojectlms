@@ -40,7 +40,7 @@ const StudentCourseDetails = () => {
   );
 
   return (
-    // <div className="outer-layer-wrapper">
+
     <div className="student-courses-container">
       <div className="student-courses-sidebar">
         <aside>
@@ -83,7 +83,7 @@ const StudentCourseDetails = () => {
           <button
             className="assignment-btn-style"
             onClick={() =>
-              navigate("/studentassignmentsbycourse", {
+              navigate("/studentassignments", {
                 state: {
                   assignmentDetails: location?.state?.courseDetails?.courseId,
                 },
@@ -97,7 +97,7 @@ const StudentCourseDetails = () => {
       </div>
     </div>
 
-    // </div>
+
   );
 };
 

@@ -1,0 +1,97 @@
+.student-courses-container {
+    /* width: 100%; */
+    display: flex;
+  }
+  
+  .student-courses-sidebar {
+    flex: 0.2;
+  }
+  .student-courses-main {
+    flex: 1;
+  }
+  
+  .student-courses-header {
+    height: 100px;
+    background: #3498db;
+    padding-left: 30px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .student-courses-title {
+    font-size: 42px;
+    color: white;
+  }
+  
+  .assignment-view-wrapper {
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 30px;
+  }
+  
+  .assignment-divider-student {
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .student-assignment-card {
+    border: 1px solid;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .student-assignment-divider {
+    margin-bottom: 10px;
+  }
+  .assignment-divider-student-inline {
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+  .student-assignment-title-heading {
+    font-size: 24px;
+    font-weight: 500;
+    margin-right: 20px;
+  }
+  .student-assignment-value {
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .student-assignment-value-description {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .student-assignment-value-deadline {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: red;
+  }
+  .student-post-comment {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .comment-input {
+    width: 250px;
+    height: 45px;
+    border-radius: 10px;
+    padding-left: 10px;
+  }
+  
+  .comment-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

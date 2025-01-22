@@ -27,12 +27,12 @@ const StudentEnrolledCourses = () => {
         const courses = snapshot.val();
         const enrolledCourses = [];
 
-        // Iterate over all courses
+
         for (const courseId in courses) {
           const course = courses[courseId];
           const enrolledStudents = course.enrolledStudents || [];
 
-          // Check if the student's UID exists in the enrolledStudents array
+
           if (enrolledStudents.includes(studentUid)) {
             enrolledCourses.push({ courseId, ...course });
           }
