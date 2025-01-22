@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./StudentEnrolledCourses.css";
+import "./StudentEnrolledCourse.css";
 import { getDatabase, ref, get, update } from "firebase/database";
 import { getAuth } from "firebase/auth";
 
