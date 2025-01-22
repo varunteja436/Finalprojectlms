@@ -21,6 +21,7 @@ import AdminViewStudents from "./Adminviewstudents";
 import AdminEditEducator from "./Adminediteducator";
 import Educatormyassignments from "./Educatormyassignments";
 import Educatorcreateassignment from "./Educatorcreateassignment";
+import AssignmentViewProgress from "./AssignmentViewProgress";
 import "./App.css";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           <Route path="/adminediteducator" element={<AdminEditEducator />} />
           <Route path="/educatormyassignments" element={<Educatormyassignments />} />
           <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
+          <Route path="/assignmentviewprogress" element={<AssignmentViewProgress />} />
         </Routes>
       </div>
     </BrowserRouter>
