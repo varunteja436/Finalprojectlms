@@ -55,7 +55,7 @@ const EducatorList = () => {
         </ul>
         <ul>
           <li>
-            <Link to="/adminstudentslist">Student List</Link>
+            <Link to="/adminviewstudents">Student List</Link>
           </li>
         </ul>
         <ul>

@@ -1,0 +1,130 @@
+.admin-view-content-container {
+    display: flex;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-view-content-sidebar {
+    flex: 0.2;
+    background: #2c3e50;
+    color: white;
+    min-height: 100vh;
+    padding: 20px 10px;
+  }
+  
+  .admin-view-content-sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .admin-view-content-sidebar ul li {
+    margin-bottom: 20px;
+  }
+  
+  .admin-view-content-sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .admin-view-content-sidebar ul li a:hover {
+    color: #3498db;
+    text-decoration: underline;
+  }
+  
+  .admin-view-content-main {
+    flex: 1;
+    background: #ecf0f1;
+    padding: 20px;
+  }
+  
+  .admin-view-content-header {
+    height: 100px;
+    background: #3498db;
+    padding-left: 30px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+  }
+  
+  .admin-view-content-title {
+    font-size: 36px;
+    color: white;
+  }
+  
+  .admin-view-content-wrapper {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .admin-view-content-card {
+    background: white;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-view-content-divider {
+    margin: 12px 0;
+    border: none;
+    border-top: 1px solid #bdc3c7;
+  }
+  
+  .admin-view-content-assignment-span-title {
+    font-weight: 700;
+    color: #2c3e50;
+  }
+  
+  .admin-view-content-assignment-span-value {
+    font-size: 16px;
+    color: #7f8c8d;
+  }
+  
+  .admin-view-content-comment-row {
+    display: flex;
+    column-gap: 20px;
+    margin-bottom: 15px;
+    align-items: center;
+  }
+  
+  .admin-view-content-comment-details-section {
+    border: 1px solid #bdc3c7;
+    width: 30%;
+    padding: 12px 8px;
+    border-radius: 4px;
+    background: #ecf0f1;
+  }
+  
+  .admin-view-content-comment-details-section-flagged {
+    background: #e74c3c;
+    color: white;
+  }
+  
+  .admin-view-content-comment-details-section-user-name {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #2c3e50;
+  }
+  
+  .admin-view-content-comment-details-section-comment-value {
+    font-weight: 700;
+    margin-left: 10px;
+    color: #34495e;
+  }
+  
+  .admin-view-content-actions {
+    text-decoration: underline;
+    color: #3498db;
+    cursor: pointer;
+  }
+  
+  .admin-view-content-flag-action {
+    color: #e74c3c;
+    font-weight: bold;
+    cursor: pointer;
+  }
