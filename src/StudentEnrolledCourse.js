@@ -1,88 +1,113 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { get, getDatabase, ref } from "firebase/database";
-import { getAuth } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./StudentEnrolledCourse.css";
+import { getDatabase, ref, get, update } from "firebase/database";
+import { getAuth } from "firebase/auth";
 
 const StudentEnrolledCourses = () => {
-  const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const auth = getAuth();
-  const user = auth.currentUser; 
+  const user = auth.currentUser;
 
+  const [allEnrolledCourses, setAllEnrolledCourses] = useState([]);
   useEffect(() => {
     if (user) {
-      fetchEnrolledCourses(user.uid); 
+      fetchEnrolledCourses(user.uid);
     }
   }, [user]);
 
   const fetchEnrolledCourses = async (studentUid) => {
     const database = getDatabase();
-    const studentRef = ref(database, `users/${studentUid}`);
+    const coursesRef = ref(database, "courses");
 
     try {
-      const snapshot = await get(studentRef);
+      const snapshot = await get(coursesRef);
+
       if (snapshot.exists()) {
-        const studentData = snapshot.val();
-        const enrolledCourses = studentData.enrolledCourses || [];
+        const courses = snapshot.val();
+        const enrolledCourses = [];
 
-        const coursesData = await Promise.all(
-          enrolledCourses.map(async (courseId) => {
-            const courseRef = ref(database, `courses/${courseId}`);
-            const courseSnapshot = await get(courseRef);
-            if (courseSnapshot.exists()) {
-              return courseSnapshot.val();
-            } else {
-              return null;
-            }
-          })
-        );
+        // Iterate over all courses
+        for (const courseId in courses) {
+          const course = courses[courseId];
+          const enrolledStudents = course.enrolledStudents || [];
 
-        setEnrolledCourses(coursesData.filter(Boolean)); 
-        setLoading(false);
+          // Check if the student's UID exists in the enrolledStudents array
+          if (enrolledStudents.includes(studentUid)) {
+            enrolledCourses.push({ courseId, ...course });
+          }
+        }
+        console.log("enrolledCourses", enrolledCourses);
+        setAllEnrolledCourses(enrolledCourses);
       } else {
-        console.log("Student not found.");
-        setLoading(false);
+        console.log("No courses found.");
+        return [];
       }
     } catch (error) {
-      console.error("Error fetching enrolled courses:", error);
-      setLoading(false);
+      console.error("Error fetching enrolled courses:", error.message);
+      return [];
     }
   };
 
-  if (loading) {
-    return <div>Loading enrolled courses...</div>;
-  }
+  const enrolledCoursesCardWrapper =
+    allEnrolledCourses &&
+    allEnrolledCourses.map((course) => (
+      <div className="student-enrolled-courses-card">
+        <div className="student-enrolledcourse-title">{course?.title}</div>{" "}
+        <button
+          onClick={() =>
+            navigate("/studentcoursedetails", {
+              state: { courseDetails: course },
+            })
+          }
+          className="student-enrolledcourse-btn"
+        >
+          Details
+        </button>
+      </div>
+    ));
 
   return (
     <div className="student-courses-container">
       <div className="student-courses-sidebar">
         <aside>
-          <ul><li><Link to="/studentdashboard">Home</Link></li></ul>
-          <ul><li><Link to="/studentprofile">View Profile</Link></li></ul>
-          <ul><li><Link to="/studentcourse">View Courses</Link></li></ul>
-          <ul><li><Link to="/">Logout</Link></li></ul>
+          <ul>
+            <li>
+              <Link to="/studentdashboard">Home</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentcourses">Courses</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentassignments">My Assignments</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentprofile"> View Profile</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/">Logout</Link>
+            </li>
+          </ul>
         </aside>
       </div>
       <div className="student-courses-main">
         <div className="student-courses-header">
-          <h3 className="student-courses-title">My Enrolled Courses</h3>
+          <h3 className="student-courses-title">Enrolled Courses</h3>
+
+          {/* // remaining header */}
         </div>
-        {enrolledCourses.length > 0 ? (
-          <div className="courses-list">
-            {enrolledCourses.map((course, index) => (
-              <div key={index} className="course-card">
-                <div className="course-title">{course.title}</div>
-                <div className="course-description">{course.description}</div>
-                <div className="course-educator">
-                  <strong>Educator:</strong> {course.educatorDetails?.name}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>No enrolled courses found.</div>
-        )}
+
+        <div className="card-wrapper-enrolled-courses">
+          {enrolledCoursesCardWrapper}
+        </div>
       </div>
     </div>
   );

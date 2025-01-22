@@ -1,0 +1,107 @@
+aside {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+aside ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+aside ul li {
+  margin-bottom: 10px;
+}
+
+aside ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+aside ul li a:hover {
+  text-decoration: underline;
+}
+
+.add-grade-container {
+  /* width: 100%; */
+  display: flex;
+}
+
+.add-grade-sidebar {
+  flex: 0.2;
+}
+.add-grade-main {
+  flex: 1;
+}
+
+.add-grade-header1 {
+  height: 100px;
+  background: #3498db;
+  padding-left: 30px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-grade-main-wrapper {
+  margin-top: 20px;
+  margin-left: 40px;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 80%;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.add-grade-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+.add-grade-response {
+  font-weight: 700;
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+.add-grade-value {
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.add-grade-divider {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.submit-grade-wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.add-grade-input {
+  height: 35px;
+  border-radius: 8px;
+  padding-left: 10px;
+  width: 300px;
+}
+.add-grade-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
