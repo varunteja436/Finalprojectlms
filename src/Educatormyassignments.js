@@ -30,7 +30,7 @@ const EducatorMyAssignments = () => {
   const addComment = async (courseId, assignmentId, userId, commentText) => {
     const db = getDatabase();
 
-    // References to the course, assignment, and user
+
     const courseRef = ref(db, `courses/${courseId}`);
     const assignmentRef = ref(db, `assignments/${assignmentId}`);
     const userRef = ref(db, `users/${userId}`);
@@ -188,7 +188,7 @@ const EducatorMyAssignments = () => {
         return;
       }
 
-      // Check and update the `commentConversation` array
+
       const updatedCommentConversation =
         matchingComments.commentConversation?.map((conversation) => {
           if (conversation.userDetails?.uid === studentUid) {
@@ -198,7 +198,7 @@ const EducatorMyAssignments = () => {
           return conversation;
         });
 
-      // Update the matching comments object
+
       const updatedComments = {
         ...matchingComments,
         commentConversation: updatedCommentConversation,
