@@ -1,97 +1,136 @@
-.student-courses-container {
-    /* width: 100%; */
-    display: flex;
-  }
-  
-  .student-courses-sidebar {
-    flex: 0.2;
-  }
-  .student-courses-main {
-    flex: 1;
-  }
-  
-  .student-courses-header {
-    height: 100px;
-    background: #3498db;
-    padding-left: 30px;
-    padding-right: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .student-courses-title {
-    font-size: 42px;
-    color: white;
-  }
-  
-  .assignment-view-wrapper {
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 30px;
-  }
-  
-  .assignment-divider-student {
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-  .student-assignment-card {
-    border: 1px solid;
-    border-radius: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-  
-  .student-assignment-divider {
-    margin-bottom: 10px;
-  }
-  .assignment-divider-student-inline {
-    margin-bottom: 40px;
-    margin-top: 40px;
-  }
-  .student-assignment-title-heading {
-    font-size: 24px;
-    font-weight: 500;
-    margin-right: 20px;
-  }
-  .student-assignment-value {
-    font-size: 20px;
-    font-weight: 400;
-  }
-  .student-assignment-value-description {
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: 400;
-  }
-  .student-assignment-value-deadline {
-    margin-top: 5px;
-    font-size: 14px;
-    font-weight: 700;
-    color: red;
-  }
-  .student-post-comment {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  .comment-input {
-    width: 250px;
-    height: 45px;
-    border-radius: 10px;
-    padding-left: 10px;
-  }
-  
-  .comment-btn {
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+.student-assignments-container {
+  display: flex;
+}
+
+.student-assignments-sidebar {
+  flex: 0.2;
+}
+
+.student-assignments-main {
+  flex: 1;
+}
+
+.student-assignments-header {
+  height: 100px;
+  background: #3498db;
+  padding-left: 30px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.student-assignments-title {
+  font-size: 42px;
+  color: white;
+}
+
+.assignment-view-wrapper {
+  margin: 30px 40px;
+}
+
+.student-assignment-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.student-assignment-divider {
+  margin-bottom: 10px;
+}
+
+.assignment-divider-inline {
+  margin: 20px 0;
+}
+
+.student-assignment-title-heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.student-assignment-value {
+  font-size: 20px;
+  font-weight: 400;
+  color: #555;
+}
+
+.student-assignment-value-description {
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 5px;
+  color: #666;
+}
+
+.student-assignment-value-deadline {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.student-post-comment {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.comment-input {
+  width: 100%;
+  max-width: 400px;
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.comment-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-btn:hover {
+  background-color: #0056b3;
+}
+
+.assignment-submit-btn-style {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.assignment-submit-btn-style:hover {
+  background-color: #218838;
+}
+
+.assignment-comment-heading {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.comment-list {
+  padding-left: 20px;
+}
+
+.comment-item {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #444;
+}
