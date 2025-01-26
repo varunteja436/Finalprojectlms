@@ -82,20 +82,33 @@ const StudentProfile = () => {
 
   return (
     <div className="student-profile-container">
-      <aside className="sidebar">
-        <ul>
-          <li><Link to="/studentdashboard">Home</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/studentprofile">View Profile</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/studentcourse">View Courses</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/">Logout</Link></li>
-        </ul>
-      </aside>
+<aside>
+          <ul>
+            <li>
+              <Link to="/studentdashboard">Home</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentcourse">Courses</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentassignments">My Assignments</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentprofile"> View Profile</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/">Logout</Link>
+            </li>
+          </ul>
+        </aside>
       <main className="student-profile-main">
         <header>
           <h1>Student Profile</h1>

@@ -66,13 +66,31 @@ const StudentCourseDetails = () => {
   return (
     <div className="student-courses-container">
       <div className="student-courses-sidebar">
-        <aside>
+      <aside>
           <ul>
-            <li><Link to="/studentdashboard">Home</Link></li>
-            <li><Link to="/studentcourses">Courses</Link></li>
-            <li><Link to="/studentassignments">My Assignments</Link></li>
-            <li><Link to="/studentprofile">View Profile</Link></li>
-            <li><Link to="/">Logout</Link></li>
+            <li>
+              <Link to="/studentdashboard">Home</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentcourse">Courses</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentassignments">My Assignments</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/studentprofile"> View Profile</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/">Logout</Link>
+            </li>
           </ul>
         </aside>
       </div>
