@@ -21,17 +21,32 @@ const StudentDashboard = () => {
     
     return (
         <div className="student-dashboard-container">
-        <aside>
+<aside>
           <ul>
-            <li><Link to="/studentdashboard">Home</Link></li>
+            <li>
+              <Link to="/studentdashboard">Home</Link>
+            </li>
           </ul>
           <ul>
-            <li><Link to="/studentprofile"> View Profile</Link></li>
+            <li>
+              <Link to="/studentcourse">Courses</Link>
+            </li>
           </ul>
           <ul>
-            <li><Link to="/studentcourse">View Courses</Link></li>
+            <li>
+              <Link to="/studentassignments">My Assignments</Link>
+            </li>
           </ul>
-          <ul><li><Link to="/">Logout</Link></li></ul>
+          <ul>
+            <li>
+              <Link to="/studentprofile"> View Profile</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/">Logout</Link>
+            </li>
+          </ul>
         </aside>
         <main className="student-dashboard-main">
           <header>
