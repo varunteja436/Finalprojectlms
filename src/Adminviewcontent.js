@@ -49,9 +49,6 @@ const AdminViewContent = () => {
               <Link to="/adminviewcontent">View Content</Link>
             </li>
             <li>
-              <Link to="/adminprofile">View Profile</Link>
-            </li>
-            <li>
               <Link to="/">Logout</Link>
             </li>
           </ul>
