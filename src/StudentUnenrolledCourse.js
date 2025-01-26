@@ -9,7 +9,6 @@ const StudentUnEnrolledCoursesViewDetails = () => {
   const location = useLocation();
   const auth = getAuth();
   const user = auth.currentUser;
-
   const [studentCourseDetails, setStudentCourseDetails] = useState({});
 
   useEffect(() => {
@@ -19,49 +18,31 @@ const StudentUnEnrolledCoursesViewDetails = () => {
   const enrollStudentToCourse = async (studentUid, courseUid) => {
     const database = getDatabase();
     const courseRef = ref(database, `courses/${courseUid}`);
-    const studentRef = ref(database, `users/${studentUid}`); 
+    const studentRef = ref(database, `users/${studentUid}`);
     try {
       const courseSnapshot = await get(courseRef);
       const studentSnapshot = await get(studentRef);
-
-      if (!courseSnapshot.exists()) {
-        alert("Course not found.");
+      if (!courseSnapshot.exists() || !studentSnapshot.exists()) {
+        alert("Course or Student not found.");
         return;
       }
-
-      if (!studentSnapshot.exists()) {
-        alert("Student not found.");
-        return;
-      }
-
       const course = courseSnapshot.val();
       const student = studentSnapshot.val();
-
-      if (student.role === "student") {
-        alert("Only students can enroll in courses.");
-        return;
-      }
-
       const enrolledStudents = course.enrolledStudents || [];
       const enrolledCourses = student.enrolledCourses || [];
-
       if (enrolledStudents.includes(studentUid)) {
-        alert("Student is already enrolled.");
+        alert("Already enrolled.");
         return;
       }
-
-      
       enrolledStudents.push(studentUid);
       enrolledCourses.push(courseUid);
-
       await update(courseRef, { enrolledStudents });
       await update(studentRef, { enrolledCourses });
-
-      alert("Student enrolled successfully.");
-      navigate("/studentenrolledcourse");
+      alert("Successfully enrolled.");
+      navigate("/studentenrolledcourses");
     } catch (error) {
       console.error("Error enrolling student:", error);
-      alert("Failed to enroll in the course. Please try again.");
+      alert("Failed to enroll. Please try again.");
     }
   };
 
@@ -75,17 +56,42 @@ const StudentUnEnrolledCoursesViewDetails = () => {
       </div>
       <hr className="course-detail-view-divider" />
       <div className="course-detail-view-description-section">
-        <div className="course-detail-view-description-heading">Course Description:</div>
-        <div className="course-detail-view-description-value">
+        <span className="course-detail-view-description-heading">Course Description:</span>
+        <span className="course-detail-view-description-value">
           {studentCourseDetails.description}
-        </div>
+        </span>
       </div>
       <hr className="course-detail-view-divider" />
-      <div className="course-detail-view-educator-section">
-        <span className="course-detail-view-description-heading">Educator:</span>
+      <div className="course-detail-view-description-section">
+        <span className="course-detail-view-description-heading">Start Date:</span>
         <span className="course-detail-view-description-title">
-          {studentCourseDetails.educatorDetails?.name}
+          {studentCourseDetails.startDate}
         </span>
+      </div>
+      <div className="course-detail-view-description-section">
+        <span className="course-detail-view-description-heading">End Date:</span>
+        <span className="course-detail-view-description-title">
+          {studentCourseDetails.endDate}
+        </span>
+      </div>
+      <hr className="course-detail-view-divider" />
+      <div className="course-detail-view-schedules">
+        <span className="course-detail-view-description-heading">Weekly Schedules:</span>
+        <ul>
+          {studentCourseDetails?.weeklySchedules?.map((week, idx) => (
+            <li key={idx}>
+              <strong>Week {idx + 1}: </strong>
+              {week.startDate} to {week.endDate}
+              <ul>
+                {week.schedule.map((day, dayIdx) => (
+                  <li key={dayIdx}>
+                    {day.day}: {day.startTime} - {day.endTime}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
