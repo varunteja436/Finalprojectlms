@@ -159,7 +159,7 @@ const StudentCourses = () => {
           </ul>
           <ul>
             <li>
-              <Link to="/studentassignments">My Assignments</Link>
+              <Link to="/studentassignment  ">My Assignments</Link>
             </li>
           </ul>
           <ul>

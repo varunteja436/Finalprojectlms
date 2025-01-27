@@ -29,7 +29,6 @@ const EducatorMyAssignments = () => {
   const addComment = async (courseId, assignmentId, userId, commentText) => {
     const db = getDatabase();
 
-    // References to the course, assignment, and user
     const courseRef = ref(db, `courses/${courseId}`);
     const assignmentRef = ref(db, `assignments/${assignmentId}`);
     const userRef = ref(db, `users/${userId}`);
@@ -67,12 +66,11 @@ const EducatorMyAssignments = () => {
       }
 
       if (commentExists) {
-        // Generate a unique ID for the new comment
         const newCommentRef = push(
           child(existingCommentRef, "commentConversation")
         );
         const newCommentObj = {
-          id: newCommentRef.key, // Auto-generated ID
+          id: newCommentRef.key, 
           userDetails: userDetails,
           commentValue: commentText,
           createdAt: new Date().toISOString(),
@@ -92,15 +90,13 @@ const EducatorMyAssignments = () => {
           commentConversation: {},
         };
 
-        // Create a new comment entry
         const newCommentRef = push(commentsRef);
         const commentConversationRef = push(
           child(newCommentRef, "commentConversation")
         );
 
-        // Add the first comment to the conversation
         const firstComment = {
-          id: commentConversationRef.key, // Auto-generated ID
+          id: commentConversationRef.key, 
           userDetails: userDetails,
           commentValue: commentText,
           createdAt: new Date().toISOString(),
@@ -129,7 +125,6 @@ const EducatorMyAssignments = () => {
     const commentsRef = ref(db, "comments");
     console.log("commentsRef", commentsRef);
     try {
-      // Fetch all assignments
       const assignmentsSnapshot = await get(assignmentsRef);
       if (!assignmentsSnapshot.exists()) {
         console.log("No assignments found");
@@ -138,7 +133,6 @@ const EducatorMyAssignments = () => {
 
       const assignments = assignmentsSnapshot.val();
 
-      // Filter assignments based on educatorUid
       const filteredAssignments = Object.keys(assignments)
         .filter(
           (assignmentId) =>
@@ -157,7 +151,6 @@ const EducatorMyAssignments = () => {
       const commentsSnapshot = await get(commentsRef);
       const comments = commentsSnapshot.exists() ? commentsSnapshot.val() : {};
 
-      // Map assignments to their comments
       const assignmentsWithComments = filteredAssignments.map((assignment) => {
         const commentDetails = Object.values(comments).filter(
           (comment) => comment.assignmentId === assignment.assignmentId
@@ -165,7 +158,7 @@ const EducatorMyAssignments = () => {
 
         return {
           ...assignment,
-          commentDetails: commentDetails ? commentDetails : [], // Array of comments for this assignment
+          commentDetails: commentDetails ? commentDetails : [], 
         };
       });
 
@@ -232,10 +225,8 @@ const EducatorMyAssignments = () => {
     try {
       const db = getDatabase();
 
-      // Reference to the specific assignment in the database
       const assignmentRef = ref(db, `assignments/${assignmentId}`);
 
-      // Delete the assignment
       await remove(assignmentRef);
       await fetchAssignmentsByEducator(user.uid);
       alert("Assignment successfully deleted.");
@@ -382,7 +373,6 @@ const EducatorMyAssignments = () => {
                                     un-flag
                                   </span>
                                 ))}
-                              {/* <span className="educator-reply">Reply</span> */}
                             </div>
                           );
                         }
@@ -417,14 +407,6 @@ const EducatorMyAssignments = () => {
         </>
       </div>
     </div>
-    // {showCourseEditForm && showCourseDetails && (
-    //   <EducatorEditCourse
-    //     showCourseDetails={showCourseDetails}
-    //     setShowCourseEditForm={setShowCourseEditForm}
-    //     setShowCourseDetails={setShowCourseDetails}
-    //     fetchAllCourses={fetchAllCourses}
-    //   />
-    // )}
   );
 };
 
