@@ -3,7 +3,7 @@ import { db } from "./firebase";
 import { get, ref, update } from "firebase/database";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import "./CompletedCourse.css"; // Make sure to create this new CSS file
+import "./CompletedCourse.css"; 
 
 const CompletedCourses = () => {
   const navigate = useNavigate();

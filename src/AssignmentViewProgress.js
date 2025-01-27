@@ -61,7 +61,6 @@ const AssignmentViewProgress = () => {
       setStudentDetails(studentResponsesValueArr);
     } catch (error) {
       console.error("Error fetching assignment:", error);
-      throw error;
     }
   };
   console.log("studentDetails", studentDetails);
@@ -91,7 +90,12 @@ const AssignmentViewProgress = () => {
           </ul>
           <ul>
             <li>
-              <Link to="/">logout</Link>
+              <Link to="/completedcourses">Completed courses</Link>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/">Logout</Link>
             </li>
           </ul>
         </aside>
@@ -108,30 +112,30 @@ const AssignmentViewProgress = () => {
           </thead>
           <tbody>
             {studentDetails?.length > 0 ? (
-              studentDetails.map((student, index) => (
+              studentDetails?.map((student, index) => (
                 <tr key={index}>
                   <td>{student.userDetails.name}</td>
-                  <td>{student.responsesArr.join(",")}</td>
+                  {/* <td>
+                    {student.responsesArr.map((i) => (
+                      <span>{`Submitted on - ${i.newValue}`}</span>
+                    ))}
+                  </td> */}
                   <td
                     className="add-grade"
                     onClick={() => {
-                      if (student?.completeResponses?.grade) {
-                        alert("Grade Already Submitted");
-                        return;
-                      } else {
-                        navigate("/assignmentaddgrade", {
-                          state: {
-                            assignmentStudentRes: student,
-                            assignmentId: location?.state?.assignmentId,
-                          },
-                        });
-                      }
+                      navigate("/assignmentaddgrade", {
+                        state: {
+                          assignmentStudentRes: student,
+                          assignmentId: location?.state?.assignmentId,
+                        },
+                      });
                     }}
                   >
                     {student?.completeResponses?.grade
-                      ? student?.completeResponses?.grade
-                      : "Add Grade"}
+                      ? "Submission History"
+                      : "View Progress"}
                   </td>
+                  <td>{student?.completeResponses?.grade || "-"}</td>
                 </tr>
               ))
             ) : (
