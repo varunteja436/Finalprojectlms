@@ -11,6 +11,7 @@ const StudentCourses = () => {
 
   const [availableCoursesToEnroll, setAvailableCoursesToEnroll] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [filteredCourses, setFilteredCourses] = useState([]);
 
   useEffect(() => {
     if (user.uid) {
@@ -18,6 +19,18 @@ const StudentCourses = () => {
       fetchEnrolledCourses(user.uid);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (searchValue.trim() === "") {
+      setFilteredCourses(availableCoursesToEnroll);
+    } else {
+      const lowercasedSearchValue = searchValue.toLowerCase();
+      const filtered = availableCoursesToEnroll.filter((course) =>
+        course.title.toLowerCase().includes(lowercasedSearchValue)
+      );
+      setFilteredCourses(filtered);
+    }
+  }, [searchValue, availableCoursesToEnroll]);
 
   const fetchEnrolledCourses = async (studentUid) => {
     const database = getDatabase();
@@ -38,7 +51,7 @@ const StudentCourses = () => {
           }
         }
 
-        return enrolledCourses; 
+        return enrolledCourses;
       } else {
         console.log("No courses found.");
         return [];
@@ -69,7 +82,8 @@ const StudentCourses = () => {
           }
         }
 
-        setAvailableCoursesToEnroll(unenrolledCourses); 
+        setAvailableCoursesToEnroll(unenrolledCourses);
+        setFilteredCourses(unenrolledCourses); 
       } else {
         console.log("No courses found.");
         return [];
@@ -80,45 +94,11 @@ const StudentCourses = () => {
     }
   };
 
-  const enrollStudentToCourse = async (studentUid, courseUid) => {
-    const database = getDatabase(); 
-    const courseRef = ref(database, `courses/${courseUid}`);
-
-    try {
-      const snapshot = await get(courseRef);
-      if (snapshot.exists()) {
-        const course = snapshot.val(); 
-        const enrolledStudents = course.enrolledStudents
-          ? Array.isArray(course.enrolledStudents)
-            ? course.enrolledStudents 
-            : course.enrolledStudents.split(",") 
-          : [];
-
-        if (enrolledStudents.includes(studentUid)) {
-          console.log("Student is already enrolled in the course.");
-          return { success: false, message: "Student is already enrolled." };
-        }
-
-        enrolledStudents.push(studentUid);
-        await update(courseRef, { enrolledStudents });
-        await fetchUnenrolledCourses(user.uid);
-        await fetchEnrolledCourses(user.uid);
-        alert("Student enrolled successfully.");
-      } else {
-        console.error("Course not found.");
-        return { success: false, message: "Course not found." };
-      }
-    } catch (error) {
-      console.error("Error enrolling student:", error.message);
-      alert("Failed to enroll to the course, please try again");
-    }
-  };
-
   const availableCourseCard =
-    availableCoursesToEnroll &&
-    Object.values(availableCoursesToEnroll).map((course, index) => {
+    filteredCourses &&
+    filteredCourses.map((course, index) => {
       return (
-        <div className="student-unenrolledcourse-card">
+        <div className="student-unenrolledcourse-card" key={course.courseId}>
           <div className="student-unenrolledcourse-name">{course.title}</div>
           <button
             className="student-unenrolledcourse-btn"
@@ -146,28 +126,20 @@ const StudentCourses = () => {
   return (
     <div className="student-course-container">
       <div className="student-course-sidebar">
-      <aside>
+        <aside>
           <ul>
             <li>
               <Link to="/studentdashboard">Home</Link>
             </li>
-          </ul>
-          <ul>
             <li>
               <Link to="/studentcourse">Courses</Link>
             </li>
-          </ul>
-          <ul>
             <li>
-              <Link to="/studentassignment  ">My Assignments</Link>
+              <Link to="/studentassignment">My Assignments</Link>
             </li>
-          </ul>
-          <ul>
             <li>
-              <Link to="/studentprofile"> View Profile</Link>
+              <Link to="/studentprofile">View Profile</Link>
             </li>
-          </ul>
-          <ul>
             <li>
               <Link to="/">Logout</Link>
             </li>
@@ -177,6 +149,13 @@ const StudentCourses = () => {
       <div className="student-course-main">
         <div className="student-course-header">
           <h3 className="student-course-title">Courses</h3>
+          <input
+            type="text"
+            placeholder="Search courses"
+            className="student-course-search"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
         </div>
         <div className="student-course-details">
           <div className="student-enrolled-course">

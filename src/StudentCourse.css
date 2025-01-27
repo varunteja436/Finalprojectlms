@@ -19,6 +19,21 @@
     align-items: center;
     justify-content: space-between;
   }
+  .student-course-search {
+    width: 300px;
+    padding: 8px;
+    margin-left: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .student-course-search:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    outline: none;
+  }
   
   .student-course-title {
     font-size: 42px;
