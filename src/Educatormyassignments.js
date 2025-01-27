@@ -1,20 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ref, get, update, push,set } from "firebase/database";
-import { getAuth } from "firebase/auth";
-import { db } from "./firebase";
 import "./Educatormyassignments.css";
+import { Link, useNavigate } from "react-router-dom";
+import { get, ref, push, set } from "firebase/database";
+import { db } from "./firebase";
+import { getAuth } from "firebase/auth";
 
 const EducatorMyAssignments = () => {
   const navigate = useNavigate();
   const [allAssignments, setAllAssignments] = useState([]);
-  const [newComment, setNewComment] = useState("");
+  const [newCommentValue, setNewCommentValue] = useState("");
   const auth = getAuth();
   const user = auth.currentUser;
 
   useEffect(() => {
-    user && fetchAssignmentsByEducator(user.uid);
+    if (user) {
+      fetchAssignmentsByEducator(user.uid);
+    }
   }, [user]);
+
+  const addComment = async (courseId, assignmentId, userId, commentText, userRole) => {
+    const commentsRef = ref(db, "comments");
+
+    try {
+      if (!commentText.trim()) {
+        alert("Comment cannot be empty.");
+        return;
+      }
+
+      const newCommentRef = push(commentsRef);
+      const commentData = {
+        assignmentId,
+        courseId,
+        userId,
+        userRole,
+        commentValue: commentText,
+        createdAt: new Date().toISOString(),
+      };
+
+      await set(newCommentRef, commentData);
+      alert("Comment added successfully!");
+      setNewCommentValue("");
+      fetchAssignmentsByEducator(user.uid); 
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
 
   const fetchAssignmentsByEducator = async (educatorUid) => {
     const assignmentsRef = ref(db, "assignments");
@@ -22,143 +52,47 @@ const EducatorMyAssignments = () => {
 
     try {
       const assignmentsSnapshot = await get(assignmentsRef);
-      if (!assignmentsSnapshot.exists()) return;
+      if (!assignmentsSnapshot.exists()) {
+        console.log("No assignments found");
+        setAllAssignments([]);
+        return;
+      }
 
       const assignments = assignmentsSnapshot.val();
-
       const filteredAssignments = Object.keys(assignments)
-        .filter((id) => assignments[id].educatorUid === educatorUid)
-        .map((id) => ({
-          assignmentId: id,
-          ...assignments[id],
+        .filter(
+          (assignmentId) => assignments[assignmentId]?.educatorUid === educatorUid
+        )
+        .map((assignmentId) => ({
+          assignmentId,
+          ...assignments[assignmentId],
         }));
+
+      if (filteredAssignments.length === 0) {
+        console.log("No assignments found for this educator");
+        setAllAssignments([]);
+        return;
+      }
 
       const commentsSnapshot = await get(commentsRef);
       const comments = commentsSnapshot.exists() ? commentsSnapshot.val() : {};
 
       const assignmentsWithComments = filteredAssignments.map((assignment) => {
-        const commentDetails = Object.values(comments).find(
-          (comment) => comment.assignmentId === assignment.assignmentId
-        );
+        const commentDetails = comments
+          ? Object.values(comments).filter(
+              (comment) => comment.assignmentId === assignment.assignmentId
+            )
+          : [];
+
         return {
           ...assignment,
-          commentDetails: commentDetails?.commentConversation || [],
+          commentDetails: commentDetails.length > 0 ? commentDetails : [],
         };
       });
 
       setAllAssignments(assignmentsWithComments);
     } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const addComment = async (assignmentId, commentText) => {
-    if (!commentText.trim()) return alert("Please enter a valid comment.");
-
-    const commentsRef = ref(db, "comments");
-
-    try {
-      const snapshot = await get(commentsRef);
-      let existingKey = null;
-
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          if (childSnapshot.val().assignmentId === assignmentId) {
-            existingKey = childSnapshot.key;
-          }
-        });
-
-        if (existingKey) {
-          const existingRef = ref(db, `comments/${existingKey}`);
-          const existingData = (await get(existingRef)).val();
-
-          await update(existingRef, {
-            commentConversation: [
-              ...existingData.commentConversation,
-              {
-                userRole: "EDUCATOR",
-                userID: user.uid,
-                userComment: commentText,
-                createdAt: Date.now(),
-              },
-            ],
-          });
-        } else {
-          const newKey = push(commentsRef).key;
-          await set(ref(db, `comments/${newKey}`), {
-            assignmentId,
-            commentConversation: [
-              {
-                userRole: "EDUCATOR",
-                userID: user.uid,
-                userComment: commentText,
-                createdAt: Date.now(),
-              },
-            ],
-          });
-        }
-      } else {
-        const newKey = push(commentsRef).key;
-        await set(ref(db, `comments/${newKey}`), {
-          assignmentId,
-          commentConversation: [
-            {
-              userRole: "EDUCATOR",
-              userID: user.uid,
-              userComment: commentText,
-              createdAt: Date.now(),
-            },
-          ],
-        });
-      }
-
-      await fetchAssignmentsByEducator(user.uid);
-      setNewComment("");
-      alert("Comment added successfully!");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const flagComment = async (assignmentId, commentIndex) => {
-    const commentsRef = ref(db, "comments");
-    const flaggedCommentsRef = ref(db, "flaggedComments");
-
-    try {
-      const snapshot = await get(commentsRef);
-      if (!snapshot.exists()) return;
-
-      let existingKey = null;
-      let commentConversation = [];
-
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.val().assignmentId === assignmentId) {
-          existingKey = childSnapshot.key;
-          commentConversation = childSnapshot.val().commentConversation || [];
-        }
-      });
-
-      if (existingKey) {
-        const flaggedComment = { ...commentConversation[commentIndex], flagged: true };
-
-
-        commentConversation[commentIndex] = flaggedComment;
-        const existingRef = ref(db, `comments/${existingKey}`);
-        await update(existingRef, { commentConversation });
-
-
-        await push(flaggedCommentsRef, {
-          assignmentId,
-          comment: flaggedComment,
-          flaggedAt: Date.now(),
-          flaggedBy: user.email,
-        });
-
-        alert("Comment flagged successfully!");
-        await fetchAssignmentsByEducator(user.uid);
-      }
-    } catch (error) {
-      console.error("Error flagging the comment:", error);
+      console.error("Error fetching assignments or comments:", error);
     }
   };
 
@@ -186,64 +120,80 @@ const EducatorMyAssignments = () => {
         </aside>
       </div>
       <div className="assignment-main">
-        <header>
-          <h1>Educator Assignments</h1>
-        </header>
+        <h1 className="form-header1">Educator Assignments</h1>
+        <button
+          className="add-assignment-button"
+          onClick={() => navigate("/educatorcreateassignment")}
+        >
+          Add New Assignment
+        </button>
         <div className="assignment-card-container">
-          <button onClick={() => navigate("/educatorcreateassignment")}>Add New Assignment</button>
-          {allAssignments.map((assignment) => (
-            <div className="assignment-card" key={assignment.assignmentId}>
-              <div className="assignment-info">
-                <div className="assignment-title">{assignment.assignmentTitle || "No Title"}</div>
-                <div>{`Class: ${assignment.courseDetails?.title || "N/A"}`}</div>
+          {allAssignments.length > 0 ? (
+            allAssignments.map((assignment) => (
+              <div key={assignment.assignmentId} className="assignment-card">
+                <div className="assignment-title">
+                  <strong>Assignment:</strong> {assignment.assignmentTitle}
+                </div>
+                <div className="assignment-title">
+                  <strong>Course Name:</strong> {assignment.courseDetails?.title || "N/A"}
+                </div>
+                <div className="view-progress-row">
+                  <div className="assignment-deadline">
+                    <strong>Deadline:</strong> {assignment.submissionDate || "N/A"}
+                  </div>
+                  <button
+                    className="view-progress-btn"
+                    onClick={() =>
+                      navigate("/assignmentviewprogress", {
+                        state: { assignmentId: assignment.assignmentId },
+                      })
+                    }
+                  >
+                    View Progress
+                  </button>
+                </div>
+                <hr />
+                <div>
+                  {assignment.commentDetails &&
+                    assignment.commentDetails.map((comment) => (
+                      <div key={comment.createdAt} className="comments-line-block">
+                        <span className="comment-user-title">
+                          {comment.userRole === "EDUCATOR"
+                            ? "Educator"
+                            : `Student ${comment.userId}`}:
+                        </span>
+                        <span>{comment.commentValue}</span>
+                      </div>
+                    ))}
+                </div>
+                <div className="student-post-comment">
+                  <input
+                    type="text"
+                    placeholder="Add a comment"
+                    className="comment-input"
+                    value={newCommentValue}
+                    onChange={(e) => setNewCommentValue(e.target.value)}
+                  />
+                  <button
+                    className="comment-btn"
+                    onClick={() =>
+                      addComment(
+                        assignment.courseDetails?.id,
+                        assignment.assignmentId,
+                        user.uid,
+                        newCommentValue,
+                        "EDUCATOR"
+                      )
+                    }
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
-              <div>{assignment.assignmentDescription || "No Description"}</div>
-              <div>{`Submission Date: ${assignment.submissionDate || "N/A"}`}</div>
-              <div>
-                <strong>Submitted Assignments:</strong>
-                <ul>
-                  {assignment.studentResponse?.map((response, index) => (
-                    <li key={index}>
-                      Student ID: {response.studentId}, Response:{" "}
-                      {response.value.join(", ")}
-                    </li>
-                  )) || "No submissions yet."}
-                </ul>
-              </div>
-              <div>
-                <strong>Comments:</strong>
-                <ul>
-                  {assignment.commentDetails.map((comment, index) => (
-                    <li key={index}>
-                      {comment.userRole === "STUDENT" ? `Student${index + 1}:` : "Educator"}{" "}
-                      {comment.userComment}
-                      {comment.userRole === "STUDENT" && (
-                        <button
-                          className="flag-btn"
-                          onClick={() => flagComment(assignment.assignmentId, index)}
-                        >
-                          Flag
-                        </button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="student-post-comment">
-                <input
-                  type="text"
-                  value={newComment}
-                  placeholder="Add a comment"
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button
-                  onClick={() => addComment(assignment.assignmentId, newComment)}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div>No assignments found.</div>
+          )}
         </div>
       </div>
     </div>
