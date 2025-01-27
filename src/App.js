@@ -23,8 +23,10 @@ import Educatormyassignments from "./Educatormyassignments";
 import Educatorcreateassignment from "./Educatorcreateassignment";
 import AssignmentViewProgress from "./AssignmentViewProgress";
 import StudentCourseDetails from "./StudentCourseDetails";
-import SuspendedStudent from "./Studentsuspend";
 import AdminViewContent from "./Adminviewcontent";
+import EditAssignments from "./Editassignment";
+import suspend from "./suspend";
+import adminstudentslist from "./adminstudentslist";
 import StudentAssignments from "./StudentAssignment";
 import "./App.css";
 
@@ -56,8 +58,10 @@ function App() {
           <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
           <Route path="/assignmentviewprogress" element={<AssignmentViewProgress />} />
           <Route path="/studentcoursedetails" element={<StudentCourseDetails />} />
-          <Route path="/suspendedstudent" element={<SuspendedStudent />} />
           <Route path="/adminviewcontent" element={<AdminViewContent />} />
+          <Route path="/editassignment" element={<EditAssignments />} />
+          <Route path="/suspend" element={<suspend />} />
+          <Route path="/adminstudentslist" element={<adminstudentslist />} />
           <Route path="/studentassignments" element={<StudentAssignments />} />
         </Routes>
       </div>

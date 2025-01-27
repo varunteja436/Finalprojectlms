@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
+import "./Educatormyassignments.css";
 import { Link, useNavigate } from "react-router-dom";
-import { ref, get, update, push,set } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  get,
+  update,
+  set,
+  push,
+  remove,
+  child,
+} from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { db } from "./firebase";
-import "./Educatormyassignments.css";
 
 const EducatorMyAssignments = () => {
   const navigate = useNavigate();
   const [allAssignments, setAllAssignments] = useState([]);
-  const [newComment, setNewComment] = useState("");
+  const [newCommentValue, setNewCommentValue] = useState("");
+  console.log("allAssignments", allAssignments);
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -16,151 +26,223 @@ const EducatorMyAssignments = () => {
     user && fetchAssignmentsByEducator(user.uid);
   }, [user]);
 
-  const fetchAssignmentsByEducator = async (educatorUid) => {
-    const assignmentsRef = ref(db, "assignments");
+  const addComment = async (courseId, assignmentId, userId, commentText) => {
+    const db = getDatabase();
+
+    const courseRef = ref(db, `courses/${courseId}`);
+    const assignmentRef = ref(db, `assignments/${assignmentId}`);
+    const userRef = ref(db, `users/${userId}`);
     const commentsRef = ref(db, "comments");
 
     try {
+      const courseSnapshot = await get(courseRef);
+      const assignmentSnapshot = await get(assignmentRef);
+      const userSnapshot = await get(userRef);
+
+      if (
+        !courseSnapshot.exists() ||
+        !assignmentSnapshot.exists() ||
+        !userSnapshot.exists()
+      ) {
+        console.log("Required data (course, assignment, or user) not found.");
+        return;
+      }
+
+      const courseDetails = courseSnapshot.val();
+      const assignmentDetails = assignmentSnapshot.val();
+      const userDetails = userSnapshot.val();
+
+      const commentsSnapshot = await get(commentsRef);
+      let commentExists = false;
+      let existingCommentRef = null;
+
+      if (commentsSnapshot.exists()) {
+        commentsSnapshot.forEach((commentSnapshot) => {
+          if (commentSnapshot.val().assignmentId === assignmentId) {
+            commentExists = true;
+            existingCommentRef = commentSnapshot.ref;
+          }
+        });
+      }
+
+      if (commentExists) {
+        const newCommentRef = push(
+          child(existingCommentRef, "commentConversation")
+        );
+        const newCommentObj = {
+          id: newCommentRef.key, 
+          userDetails: userDetails,
+          commentValue: commentText,
+          createdAt: new Date().toISOString(),
+        };
+
+        await update(existingCommentRef, {
+          [`commentConversation/${newCommentRef.key}`]: newCommentObj,
+        });
+
+        console.log("New reply added to the existing comment.");
+      } else {
+        const newCommentObj = {
+          assignmentId: assignmentId,
+          courseDetails: courseDetails,
+          educatorDetails: courseDetails.educatorDetails,
+          assignmentDetails: assignmentDetails,
+          commentConversation: {},
+        };
+
+        const newCommentRef = push(commentsRef);
+        const commentConversationRef = push(
+          child(newCommentRef, "commentConversation")
+        );
+
+        const firstComment = {
+          id: commentConversationRef.key, 
+          userDetails: userDetails,
+          commentValue: commentText,
+          createdAt: new Date().toISOString(),
+          flagged: false,
+        };
+
+        await set(newCommentRef, {
+          ...newCommentObj,
+          commentConversation: {
+            [commentConversationRef.key]: firstComment,
+          },
+        });
+
+        console.log("New comment added for the assignment.");
+      }
+      await fetchAssignmentsByEducator(user.uid);
+      alert("Comment added successfully!");
+    } catch (error) {
+      console.error("Error checking or adding comment:", error);
+    } finally {
+      setNewCommentValue("");
+    }
+  };
+  const fetchAssignmentsByEducator = async (educatorUid) => {
+    const assignmentsRef = ref(db, "assignments");
+    const commentsRef = ref(db, "comments");
+    console.log("commentsRef", commentsRef);
+    try {
       const assignmentsSnapshot = await get(assignmentsRef);
-      if (!assignmentsSnapshot.exists()) return;
+      if (!assignmentsSnapshot.exists()) {
+        console.log("No assignments found");
+        setAllAssignments([]);
+      }
 
       const assignments = assignmentsSnapshot.val();
 
       const filteredAssignments = Object.keys(assignments)
-        .filter((id) => assignments[id].educatorUid === educatorUid)
-        .map((id) => ({
-          assignmentId: id,
-          ...assignments[id],
+        .filter(
+          (assignmentId) =>
+            assignments[assignmentId].educatorUid === educatorUid
+        )
+        .map((assignmentId) => ({
+          assignmentId,
+          ...assignments[assignmentId],
         }));
+      console.log("assignments", filteredAssignments);
+      if (filteredAssignments.length === 0) {
+        console.log("No assignments found for this educator");
+        return [];
+      }
 
       const commentsSnapshot = await get(commentsRef);
       const comments = commentsSnapshot.exists() ? commentsSnapshot.val() : {};
 
       const assignmentsWithComments = filteredAssignments.map((assignment) => {
-        const commentDetails = Object.values(comments).find(
+        const commentDetails = Object.values(comments).filter(
           (comment) => comment.assignmentId === assignment.assignmentId
         );
+
         return {
           ...assignment,
-          commentDetails: commentDetails?.commentConversation || [],
+          commentDetails: commentDetails ? commentDetails : [], 
         };
       });
 
+      console.log(assignmentsWithComments);
       setAllAssignments(assignmentsWithComments);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching assignments or comments:", error);
+      return [];
     }
   };
 
-  const addComment = async (assignmentId, commentText) => {
-    if (!commentText.trim()) return alert("Please enter a valid comment.");
-
+  const flagUserComment = async (assignmentId, studentUid, flag) => {
     const commentsRef = ref(db, "comments");
 
     try {
-      const snapshot = await get(commentsRef);
-      let existingKey = null;
+      const commentsSnapshot = await get(commentsRef);
 
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          if (childSnapshot.val().assignmentId === assignmentId) {
-            existingKey = childSnapshot.key;
-          }
-        });
-
-        if (existingKey) {
-          const existingRef = ref(db, `comments/${existingKey}`);
-          const existingData = (await get(existingRef)).val();
-
-          await update(existingRef, {
-            commentConversation: [
-              ...existingData.commentConversation,
-              {
-                userRole: "EDUCATOR",
-                userID: user.uid,
-                userComment: commentText,
-                createdAt: Date.now(),
-              },
-            ],
-          });
-        } else {
-          const newKey = push(commentsRef).key;
-          await set(ref(db, `comments/${newKey}`), {
-            assignmentId,
-            commentConversation: [
-              {
-                userRole: "EDUCATOR",
-                userID: user.uid,
-                userComment: commentText,
-                createdAt: Date.now(),
-              },
-            ],
-          });
-        }
-      } else {
-        const newKey = push(commentsRef).key;
-        await set(ref(db, `comments/${newKey}`), {
-          assignmentId,
-          commentConversation: [
-            {
-              userRole: "EDUCATOR",
-              userID: user.uid,
-              userComment: commentText,
-              createdAt: Date.now(),
-            },
-          ],
-        });
+      if (!commentsSnapshot.exists()) {
+        console.log("No comments found.");
+        return;
       }
 
-      await fetchAssignmentsByEducator(user.uid);
-      setNewComment("");
-      alert("Comment added successfully!");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      const comments = commentsSnapshot.val();
 
-  const flagComment = async (assignmentId, commentIndex) => {
-    const commentsRef = ref(db, "comments");
-    const flaggedCommentsRef = ref(db, "flaggedComments");
+      const matchingComments = Object.values(comments).find(
+        (comment) => comment.assignmentId === assignmentId
+      );
 
-    try {
-      const snapshot = await get(commentsRef);
-      if (!snapshot.exists()) return;
-
-      let existingKey = null;
-      let commentConversation = [];
-
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.val().assignmentId === assignmentId) {
-          existingKey = childSnapshot.key;
-          commentConversation = childSnapshot.val().commentConversation || [];
+      if (!matchingComments) {
+        console.log(`No comments found for assignmentId: ${assignmentId}`);
+        return;
+      }
+      console.log("matchingComments", matchingComments);
+      const updatedCommentConversation = Object.values(
+        matchingComments.commentConversation
+      )?.map((conversation) => {
+        if (conversation.id === studentUid) {
+          return { ...conversation, flagged: flag };
         }
+        return conversation;
       });
 
-      if (existingKey) {
-        const flaggedComment = { ...commentConversation[commentIndex], flagged: true };
+      const updatedComments = {
+        ...matchingComments,
+        commentConversation: updatedCommentConversation,
+      };
 
+      const matchingCommentsKey = Object.keys(comments).find(
+        (key) => comments[key].assignmentId === assignmentId
+      );
 
-        commentConversation[commentIndex] = flaggedComment;
-        const existingRef = ref(db, `comments/${existingKey}`);
-        await update(existingRef, { commentConversation });
-
-
-        await push(flaggedCommentsRef, {
-          assignmentId,
-          comment: flaggedComment,
-          flaggedAt: Date.now(),
-          flaggedBy: user.email,
-        });
-
-        alert("Comment flagged successfully!");
+      if (matchingCommentsKey) {
+        const matchingCommentsRef = ref(db, `comments/${matchingCommentsKey}`);
+        await set(matchingCommentsRef, updatedComments);
         await fetchAssignmentsByEducator(user.uid);
+        alert(`Flag updated for user .`);
       }
     } catch (error) {
-      console.error("Error flagging the comment:", error);
+      console.error("Error updating flag:", error);
     }
   };
+
+  const deleteAssignment = async (assignmentId) => {
+    try {
+      const db = getDatabase();
+
+      const assignmentRef = ref(db, `assignments/${assignmentId}`);
+
+      await remove(assignmentRef);
+      await fetchAssignmentsByEducator(user.uid);
+      alert("Assignment successfully deleted.");
+    } catch (error) {
+      console.error("Error deleting the assignment:", error);
+    }
+  };
+
+  const addNewCourseButton = (
+    <button
+      className="add-assignment-button"
+      onClick={() => navigate("/educatorcreateassignment")}
+    >
+      Add New Assignment
+    </button>
+  );
 
   return (
     <div className="assignment-container">
@@ -170,15 +252,28 @@ const EducatorMyAssignments = () => {
             <li>
               <Link to="/educatordashboard">Home</Link>
             </li>
+          </ul>
+          <ul>
             <li>
               <Link to="/educatorprofile">Profile</Link>
             </li>
+          </ul>
+          <ul>
             <li>
               <Link to="/educatorCourseList">Course List</Link>
             </li>
+          </ul>
+          <ul>
             <li>
               <Link to="/educatormyassignments">My Assignments</Link>
             </li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/educatorPreviousCourses">Previous courses</Link>
+            </li>
+          </ul>
+          <ul>
             <li>
               <Link to="/">Logout</Link>
             </li>
@@ -186,65 +281,130 @@ const EducatorMyAssignments = () => {
         </aside>
       </div>
       <div className="assignment-main">
-        <header>
-          <h1>Educator Assignments</h1>
-        </header>
-        <div className="assignment-card-container">
-          <button onClick={() => navigate("/educatorcreateassignment")}>Add New Assignment</button>
-          {allAssignments.map((assignment) => (
-            <div className="assignment-card" key={assignment.assignmentId}>
-              <div className="assignment-info">
-                <div className="assignment-title">{assignment.assignmentTitle || "No Title"}</div>
-                <div>{`Class: ${assignment.courseDetails?.title || "N/A"}`}</div>
-              </div>
-              <div>{assignment.assignmentDescription || "No Description"}</div>
-              <div>{`Submission Date: ${assignment.submissionDate || "N/A"}`}</div>
-              <div>
-                <strong>Submitted Assignments:</strong>
-                <ul>
-                  {assignment.studentResponse?.map((response, index) => (
-                    <li key={index}>
-                      Student ID: {response.studentId}, Response:{" "}
-                      {response.value.join(", ")}
-                    </li>
-                  )) || "No submissions yet."}
-                </ul>
-              </div>
-              <div>
-                <strong>Comments:</strong>
-                <ul>
-                  {assignment.commentDetails.map((comment, index) => (
-                    <li key={index}>
-                      {comment.userRole === "STUDENT" ? `Student${index + 1}:` : "Educator"}{" "}
-                      {comment.userComment}
-                      {comment.userRole === "STUDENT" && (
-                        <button
-                          className="flag-btn"
-                          onClick={() => flagComment(assignment.assignmentId, index)}
-                        >
-                          Flag
-                        </button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="student-post-comment">
-                <input
-                  type="text"
-                  value={newComment}
-                  placeholder="Add a comment"
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button
-                  onClick={() => addComment(assignment.assignmentId, newComment)}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <>
+          <h1 className="form-header1">Educator Assignments</h1>
+          <div className="assignment-card-container">
+            {addNewCourseButton}
+            {allAssignments &&
+              allAssignments.map((assignment, index) => (
+                <div className="assignment-card">
+                  <div className="assignment-info">
+                    <div className="assignment-title">
+                      {assignment.assignmentTitle}
+                    </div>
+                    <div className="assignment-action-btns">
+                      <button
+                        className="assignment-edit-btn"
+                        onClick={() =>
+                          navigate("/editassignment", {
+                            state: { assignmentData: assignment },
+                          })
+                        }
+                      >
+                        Edit Assignment
+                      </button>
+                      <button
+                        className="assignment-delete-btn"
+                        onClick={() =>
+                          deleteAssignment(assignment?.assignmentId)
+                        }
+                      >
+                        Delete Assignment
+                      </button>
+                    </div>
+                  </div>
+                  <div className="assignment-title">{`Class: ${assignment.courseDetails?.title}`}</div>
+                  <div className="view-progress-row">
+                    <div className="assignment-deadline">
+                      <span className="assignment-deadline-title">
+                        Dead line for submission:{" "}
+                      </span>
+                      <span>{assignment.submissionDate}</span>
+                    </div>
+                    <button
+                      className="view-progress-btn"
+                      onClick={() =>
+                        navigate("/assignmentviewprogress", {
+                          state: { assignmentId: assignment?.assignmentId },
+                        })
+                      }
+                    >
+                      View Progress
+                    </button>
+                  </div>
+                  <hr />
+                  <div>
+                    {assignment?.commentDetails?.map((comments) => {
+                      return Object.values(comments?.commentConversation)?.map(
+                        (conversation) => {
+                          return (
+                            <div className="comments-line-block">
+                              <span className="comment-user-title">
+                                {conversation?.userDetails?.name}:
+                              </span>
+                              <span className="comment-user-comment-edu">
+                                {conversation?.commentValue}
+                              </span>
+                              {conversation?.userDetails?.role === "STUDENT" &&
+                                (!conversation?.flagged ? (
+                                  <span
+                                    className="educator-flag"
+                                    onClick={() =>
+                                      flagUserComment(
+                                        assignment.assignmentId,
+                                        conversation?.id,
+                                        true
+                                      )
+                                    }
+                                  >
+                                    Flag
+                                  </span>
+                                ) : (
+                                  <span
+                                    className="educator-flag"
+                                    onClick={() =>
+                                      flagUserComment(
+                                        assignment.assignmentId,
+                                        conversation?.id,
+                                        false
+                                      )
+                                    }
+                                  >
+                                    un-flag
+                                  </span>
+                                ))}
+                            </div>
+                          );
+                        }
+                      );
+                    })}
+                  </div>
+                  <div className="student-post-comment">
+                    <input
+                      type="text"
+                      placeholder="Add comments"
+                      className="comment-input"
+                      value={newCommentValue}
+                      onChange={(e) => setNewCommentValue(e.target.value)}
+                    />
+                    <button
+                      className="comment-btn"
+                      onClick={() =>
+                        addComment(
+                          assignment?.courseDetails?.id,
+                          assignment?.assignmentId,
+                          user?.uid,
+                          newCommentValue
+                        )
+                      }
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </>
       </div>
     </div>
   );

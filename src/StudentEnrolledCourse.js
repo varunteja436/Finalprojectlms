@@ -78,7 +78,7 @@ const StudentEnrolledCourses = () => {
           </ul>
           <ul>
             <li>
-              <Link to="/studentcourses">Courses</Link>
+              <Link to="/studentcourse">Courses</Link>
             </li>
           </ul>
           <ul>
