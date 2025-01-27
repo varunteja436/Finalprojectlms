@@ -79,7 +79,7 @@ const StudentCourseDetails = () => {
           </ul>
           <ul>
             <li>
-              <Link to="/studentassignments">My Assignments</Link>
+              <Link to="/studentassignment">My Assignments</Link>
             </li>
           </ul>
           <ul>
@@ -102,13 +102,13 @@ const StudentCourseDetails = () => {
         <div className="assignment-btns">
           <button
             className="assignment-btn-style"
-            onClick={() =>
-              navigate("/studentassignments", {
-                state: {
-                  assignmentDetails: location?.state?.courseDetails?.courseId,
-                },
-              })
-            }
+            // onClick={() =>
+            //   navigate("/studentassignments", {
+            //     state: {
+            //       assignmentDetails: location?.state?.courseDetails?.courseId,
+            //     },
+            //   })
+            // }
           >
             View Assignments
           </button>
