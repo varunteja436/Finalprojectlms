@@ -45,32 +45,37 @@ const EducatorProfile = () => {
   return (
     <div className="educator-profile-container">
       <aside>
-                <ul>
-                  <li>
-                    <Link to="/educatordashboard">Home</Link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <Link to="/educatorprofile">Profile</Link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <Link to="/educatorCourseList">Course List</Link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <Link to="/educatormyassignments">My Assignments</Link>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <Link to="/">Logout</Link>
-                  </li>
-                </ul>
-              </aside>
+              <ul>
+                <li>
+                  <Link to="/educatordashboard">Home</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link to="/educatorprofile">Profile</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link to="/educatorCourseList">Course List</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link to="/educatormyassignments">My Assignments</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link to="/completedcourses">Completed courses</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link to="/">Logout</Link>
+                </li>
+              </ul>
+      </aside>
       <main className="educator-profile-main">
         <header>
           <h1>Educator Profile</h1>

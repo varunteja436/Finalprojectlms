@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "./firebase";
-import { get, ref, remove } from "firebase/database";
+import { get, ref, update, remove } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { Link } from "react-router-dom";
 import EducatorEditCourse from "./EducatorEditCourse";
-import './EducatorCourseList.css';
+import "./EducatorCourseList.css";
 
 const EducatorCourseList = () => {
   const navigate = useNavigate();
 
   const [allCourses, setAllCourses] = useState([]);
+  const [completedCourses, setCompletedCourses] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [showCourseDetails, setShowCourseDetails] = useState(null); 
+  const [showCourseDetails, setShowCourseDetails] = useState(null);
   const [showCourseEditForm, setShowCourseEditForm] = useState(false);
 
   useEffect(() => {
@@ -28,15 +29,22 @@ const EducatorCourseList = () => {
       const snapshot = await get(coursesRef);
 
       if (snapshot.exists()) {
-        const courses = [];
+        const activeCourses = [];
+        const completedCourses = [];
+        
         snapshot.forEach((childSnapshot) => {
           const course = childSnapshot.val();
-          if (course.educatorDetails?.uid === user?.uid) {
-            courses.push({ id: childSnapshot.key, ...course });
+          if (course?.educatorDetails?.uid === user?.uid) {
+            if (course?.completed) {
+              completedCourses.push({ id: childSnapshot.key, ...course });
+            } else {
+              activeCourses.push({ id: childSnapshot.key, ...course });
+            }
           }
         });
 
-        setAllCourses(courses);
+        setAllCourses(activeCourses);
+        setCompletedCourses(completedCourses);
       } else {
         alert("No courses found. Add courses to see the courses list");
         setAllCourses([]);
@@ -57,6 +65,20 @@ const EducatorCourseList = () => {
       alert("Course deleted successfully!");
     } catch (error) {
       console.error("Error deleting course: ", error.message);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  const markCourseAsComplete = async (courseId) => {
+    try {
+      setLoader(true);
+      const courseRef = ref(db, `courses/${courseId}`);
+      await update(courseRef, { completed: true });
+      await fetchAllCourses();
+      alert("Course marked as complete!");
+    } catch (error) {
+      console.error("Error marking course as complete: ", error.message);
     } finally {
       setLoader(false);
     }
@@ -93,16 +115,18 @@ const EducatorCourseList = () => {
       <div className="course-schedule">
         <strong>Schedule:</strong>
         <ul>
-          {course?.weeklySchedules?.map((week, weekIndex) => (
-            <li key={weekIndex}>
-              <div>Week {weekIndex + 1}:</div>
-              {week.schedule?.map((daySchedule, dayIndex) => (
-                <div key={dayIndex}>
-                  {daySchedule.day}: {daySchedule.startTime} - {daySchedule.endTime}
-                </div>
-              ))}
-            </li>
-          ))}
+          {Array.isArray(course?.weeklySchedules) &&
+            course?.weeklySchedules.map((week, weekIndex) => (
+              <li key={weekIndex}>
+                <div>Week {weekIndex + 1}:</div>
+                {Array.isArray(week?.schedule) &&
+                  week?.schedule.map((daySchedule, dayIndex) => (
+                    <div key={dayIndex}>
+                      {daySchedule.day}: {daySchedule.startTime} - {daySchedule.endTime}
+                    </div>
+                  ))}
+              </li>
+            ))}
         </ul>
       </div>
     );
@@ -118,8 +142,7 @@ const EducatorCourseList = () => {
       <button
         onClick={() => {
           setShowCourseDetails(course);
-          setShowCourseEditForm(true);  
-
+          setShowCourseEditForm(true);
         }}
         className="edit-course-button"
       >
@@ -136,12 +159,34 @@ const EducatorCourseList = () => {
       </button>
     );
 
+    const viewEnrolledStudentsButton = (
+      <button
+        onClick={() =>
+          navigate("/educatorviewstudents", { state: { courseId: course.id } })
+        }
+        className="view-student-btn"
+      >
+        View Students
+      </button>
+    );
+
+    const markAsCompleteButton = (
+      <button
+        onClick={() => markCourseAsComplete(course.id)}
+        className="view-student-btn"
+      >
+        Mark as Complete
+      </button>
+    );
+
     return (
       <div className="course-card" key={index}>
         {courseTitle}
         {courseDescription}
         {courseSchedule}
-        {courseDates} 
+        {courseDates}
+        {viewEnrolledStudentsButton}
+        {markAsCompleteButton}
         {editButton}
         {deleteButton}
       </div>
@@ -157,51 +202,57 @@ const EducatorCourseList = () => {
         {addNewCourseButton}
       </div>
       {courseWrapper}
+      <Link to="/completedcourses">
+        <button className="add-course-button">View Completed Courses</button>
+      </Link>
     </div>
   );
 
-  console.log("Show Course Details:", showCourseDetails);  
-
-    return (
-      <>
-        <aside>
-                  <ul>
-                    <li>
-                      <Link to="/educatordashboard">Home</Link>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <Link to="/educatorprofile">Profile</Link>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <Link to="/educatorCourseList">Course List</Link>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <Link to="/educatormyassignments">My Assignments</Link>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <Link to="/">Logout</Link>
-                    </li>
-                  </ul>
-                </aside>
-        {courseContainer}
-        {showCourseEditForm && showCourseDetails && (
-          <EducatorEditCourse
-            showCourseDetails={showCourseDetails}
-            setShowCourseEditForm={setShowCourseEditForm}
-            setShowCourseDetails={setShowCourseDetails}
-            fetchAllCourses={fetchAllCourses}
-          />
-        )}
-      </>
-    );
-  };
+  return (
+    < >
+      <aside>
+        <ul>
+          <li>
+            <Link to="/educatordashboard">Home</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/educatorprofile">Profile</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/educatorCourseList">Course List</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/educatormyassignments">My Assignments</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/completedcourses">Completed courses</Link>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to="/">Logout</Link>
+          </li>
+        </ul>
+      </aside>
+      {courseContainer}
+      {showCourseEditForm && showCourseDetails && (
+        <EducatorEditCourse
+          showCourseDetails={showCourseDetails}
+          setShowCourseEditForm={setShowCourseEditForm}
+          setShowCourseDetails={setShowCourseDetails}
+          fetchAllCourses={fetchAllCourses}
+        />
+      )}
+    </>
+  );
+};
 
 export default EducatorCourseList;

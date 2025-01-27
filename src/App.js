@@ -25,8 +25,9 @@ import AssignmentViewProgress from "./AssignmentViewProgress";
 import StudentCourseDetails from "./StudentCourseDetails";
 import AdminViewContent from "./Adminviewcontent";
 import EditAssignments from "./Editassignment";
+import CompletedCourses from "./CompletedCourses";
 import suspend from "./suspend";
-import adminstudentslist from "./adminstudentslist";
+// import adminstudentslist from "./adminstudentslist";
 import StudentAssignments from "./StudentAssignment";
 import "./App.css";
 
@@ -63,6 +64,7 @@ function App() {
           <Route path="/suspend" element={<suspend />} />
           <Route path="/adminstudentslist" element={<adminstudentslist />} />
           <Route path="/studentassignments" element={<StudentAssignments />} />
+          <Route path="/completedcourses" element={<CompletedCourses />} />
         </Routes>
       </div>
     </BrowserRouter>
