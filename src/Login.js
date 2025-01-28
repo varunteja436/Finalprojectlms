@@ -10,35 +10,45 @@ const adminPassword = 'admin123';
 
 function Signin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSignin = async (event) => {
     event.preventDefault();
     try {
       if (email === adminEmail && password === adminPassword) {
         console.log("Admin login successful!");
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
-        
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         const user = userCredential.user;
 
-        const userRef = ref(database, 'users/' + user.uid);
+        const userRef = ref(database, "users/" + user.uid);
         const userSnapshot = await get(userRef);
 
         if (userSnapshot.exists()) {
           const userData = userSnapshot.val();
           if (userData.role === "EDUCATOR") {
-            navigate('/educatordashboard', { state: { email: user.email } }); 
+            navigate("/educatordashboard", { state: { email: user.email } });
           } else if (userData.role === "STUDENT") {
-            navigate('/studentdashboard', { state: { email: user.email } }); 
+            console.log("userData", userData);
+            if (userData?.isActive) {
+              navigate("/studentdashboard", { state: { email: user.email } });
+            } else {
+              navigate("/suspendedstudent", { state: { email: user.email } });
+            }
+          } else if (userData.role === "ADMIN") {
+            navigate("/dashboard", { state: { email: user.email } });
           } else {
             throw new Error("Unknown role, access denied.");
           }
         } else {
-          throw new Error('User not found in database');
+          throw new Error("User not found in database");
         }
       }
     } catch (err) {
