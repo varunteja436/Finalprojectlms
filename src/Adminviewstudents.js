@@ -61,11 +61,11 @@ const AdminViewStudents = () => {
             <Link to="/dashboard">Home</Link>
           </li>
         </ul>
-        <ul>
-          <li>
-            <Link to="/adminstudentslist">Student List</Link>
-          </li>
-        </ul>
+           <ul>
+                  <li>
+                    <Link to="/adminviewstudents">Student List</Link>
+                  </li>
+                </ul>
         <ul>
           <li>
             <Link to="/educatorlist">Educator List</Link>
