@@ -55,7 +55,7 @@ const StudentCourseDetails = () => {
               <Link to="/studentcourse">Courses</Link>
             </li>
             <li>
-              <Link to="/studentassignment">My Assignments</Link>
+              <Link to="/studentallassignment">My Assignments</Link>
             </li>
             <li>
               <Link to="/studentprofile">View Profile</Link>
