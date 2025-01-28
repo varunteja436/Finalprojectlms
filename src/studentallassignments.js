@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, update, set, push } from "firebase/database";
+import {getDatabase,ref,get,update,set,push,child,} from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db } from "./firebase";
@@ -26,10 +26,9 @@ const StudentAllAssignments = () => {
 
   const fetchCommentsByAssignmentId = async (assignmentId) => {
     const db = getDatabase();
-    const commentsRef = ref(db, "comments");
+    const commentsRef = ref(db, "comments"); 
 
     try {
-
       const commentsSnapshot = await get(commentsRef);
 
       if (!commentsSnapshot.exists()) {
@@ -39,10 +38,8 @@ const StudentAllAssignments = () => {
 
       let commentsForAssignment = [];
 
-
       commentsSnapshot.forEach((commentSnapshot) => {
         const commentData = commentSnapshot.val();
-
 
         if (commentData.assignmentId === assignmentId) {
           commentsForAssignment.push(commentData);
@@ -66,7 +63,6 @@ const StudentAllAssignments = () => {
 
     try {
       setFetchAssignments(true);
-
       const coursesSnapshot = await get(coursesRef);
       if (!coursesSnapshot.exists()) {
         console.log("No courses found");
@@ -84,7 +80,6 @@ const StudentAllAssignments = () => {
           const course = courses[courseId];
           return { ...course, id: courseId };
         });
-
 
       const assignmentsSnapshot = await get(assignmentsRef);
       if (!assignmentsSnapshot.exists()) {
@@ -159,19 +154,19 @@ const StudentAllAssignments = () => {
           assignment.studentResponse = [];
         }
 
-
         const studentIndex = assignment.studentResponse.findIndex(
           (response) => response.studentId === studentId
         );
 
         if (studentIndex !== -1) {
-
-          assignment.studentResponse[studentIndex].value.push(newValue);
+          assignment.studentResponse[studentIndex].value.push({
+            newValue,
+            submittedDate: new Date().toISOString(),
+          });
         } else {
-
           assignment.studentResponse.push({
             studentId,
-            value: [newValue],
+            value: [{ newValue, submittedDate: new Date().toISOString() }],
           });
         }
 
@@ -240,17 +235,18 @@ const StudentAllAssignments = () => {
       }
 
       if (commentExists) {
+        const newCommentRef = push(
+          child(existingCommentRef, "commentConversation")
+        );
         const newCommentObj = {
+          id: newCommentRef.key,
           userDetails: userDetails,
           commentValue: commentText,
           createdAt: new Date().toISOString(),
         };
 
-        const currentComments = (await get(existingCommentRef)).val()
-          .commentConversation;
-
         await update(existingCommentRef, {
-          commentConversation: [...currentComments, newCommentObj],
+          [`commentConversation/${newCommentRef.key}`]: newCommentObj,
         });
 
         console.log("New reply added to the existing comment.");
@@ -260,23 +256,33 @@ const StudentAllAssignments = () => {
           courseDetails: courseDetails,
           educatorDetails: courseDetails.educatorDetails,
           assignmentDetails: assignmentDetails,
-          commentConversation: [
-            {
-              userDetails: userDetails,
-              commentValue: commentText,
-              createdAt: new Date().toISOString(),
-              flagged: false,
-            },
-          ],
+          commentConversation: {},
         };
 
         const newCommentRef = push(commentsRef);
-        await set(newCommentRef, newCommentObj);
+        const commentConversationRef = push(
+          child(newCommentRef, "commentConversation")
+        );
+
+        const firstComment = {
+          id: commentConversationRef.key, 
+          userDetails: userDetails,
+          commentValue: commentText,
+          createdAt: new Date().toISOString(),
+          flagged: false,
+        };
+
+        await set(newCommentRef, {
+          ...newCommentObj,
+          commentConversation: {
+            [commentConversationRef.key]: firstComment,
+          },
+        });
 
         console.log("New comment added for the assignment.");
       }
       await fetchAllAssignmentsForStudent(user.uid);
-      alert("comment");
+      alert("Comment added successfully!");
     } catch (error) {
       console.error("Error checking or adding comment:", error);
     } finally {
@@ -296,6 +302,7 @@ const StudentAllAssignments = () => {
         className="select-course-assignment"
         onChange={handleCourseChange}
         defaultValue=""
+        value={selectedCourseName}
       >
         <option value="" disabled>
           Select a course
@@ -304,7 +311,6 @@ const StudentAllAssignments = () => {
           <option value={course.title}>{course.title}</option>
         ))}
       </select>
-      {/* <span onClick={() => setSelectedCourseName("")}>clear</span> */}
     </>
   );
 
@@ -312,7 +318,167 @@ const StudentAllAssignments = () => {
     const gradeObj = arr?.find((i) => {
       return i?.studentId === user.uid;
     });
+    console.log("gradeObj", gradeObj);
     return gradeObj;
+  };
+
+  const deleteComment = async (commentId) => {
+    try {
+      const db = getDatabase();
+      const commentsRef = ref(db, "comments");
+
+      const snapshot = await get(commentsRef);
+
+      if (snapshot.exists()) {
+        const comments = snapshot.val();
+
+        for (const [key, commentData] of Object.entries(comments)) {
+          const commentConversationArray = Object.values(
+            commentData.commentConversation || {}
+          );
+
+          const commentIndex = commentConversationArray.findIndex(
+            (comment) => comment.id === commentId
+          );
+
+          if (commentIndex !== -1) {
+            const updatedCommentConversation = commentConversationArray.filter(
+              (comment) => comment.id !== commentId
+            );
+
+            const updatedCommentConversationObject =
+              updatedCommentConversation.reduce((acc, item, index) => {
+                acc[index] = item;
+                return acc;
+              }, {});
+
+            await update(ref(db, `comments/${key}`), {
+              commentConversation: updatedCommentConversationObject,
+            });
+
+            await fetchAllAssignmentsForStudent(user.uid);
+            alert(`Comment  has been deleted.`);
+          }
+        }
+
+        console.log(`Comment  not found.`);
+      } else {
+        console.log("No comments found in the database.");
+      }
+    } catch (error) {
+      console.error("Error deleting the comment:", error);
+    }
+  };
+
+  const saveEditedComment = async (commentId, editedValue, clearEditFn) => {
+    try {
+      const db = getDatabase();
+      const commentsRef = ref(db, "comments");
+
+      const snapshot = await get(commentsRef);
+
+      if (snapshot.exists()) {
+        const comments = snapshot.val();
+
+        for (const [key, commentData] of Object.entries(comments)) {
+          const commentConversationArray = Object.values(
+            commentData.commentConversation || {}
+          );
+
+          const commentIndex = commentConversationArray.findIndex(
+            (comment) => comment.id === commentId
+          );
+
+          if (commentIndex !== -1) {
+            commentConversationArray[commentIndex].commentValue = editedValue;
+
+            const updatedCommentConversationObject =
+              commentConversationArray.reduce((acc, item, index) => {
+                acc[index] = item;
+                return acc;
+              }, {});
+
+            await update(ref(db, `comments/${key}`), {
+              commentConversation: updatedCommentConversationObject,
+            });
+            await fetchAllAssignmentsForStudent(user.uid);
+            alert(`Comment has been edited successfully.`);
+          }
+        }
+
+        console.log(`Comment  not found.`);
+      } else {
+        console.log("No comments found in the database.");
+      }
+    } catch (error) {
+      console.error("Error editing the comment:", error);
+    } finally {
+      clearEditFn();
+    }
+  };
+
+  
+
+  const CommentConversation = ({ conversation }) => {
+    const [editComment, setEditComment] = useState(false);
+
+    const [editCommentValue, setEditCommentValue] = useState(
+      conversation?.commentValue
+    );
+    return (
+      <>
+        {editComment ? (
+          <>
+            <div className="comment-user-title">
+              {conversation?.userDetails?.name}:
+            </div>
+            <div className="comment-user-comment">
+              <input
+                className="edit-comment-input"
+                value={editCommentValue}
+                onChange={(e) => setEditCommentValue(e.target.value)}
+              />
+              <button
+                className="edit-comment-btn"
+                onClick={() => {
+                  saveEditedComment(conversation?.id, editCommentValue, () =>
+                    setEditComment(false)
+                  );
+                }}
+              >
+                Save
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="comment-user-title">
+              {conversation?.userDetails?.name}:
+            </div>
+            <div className="comment-user-comment">
+              {conversation?.commentValue}
+            </div>
+          </>
+        )}
+
+        {user.uid === conversation?.userDetails?.uid && (
+          <>
+            <div
+              className="student-view-actions"
+              onClick={() => setEditComment(!editComment)}
+            >
+              Edit
+            </div>
+            <div
+              className="student-view-actions"
+              onClick={() => deleteComment(conversation?.id)}
+            >
+              Delete
+            </div>
+          </>
+        )}
+      </>
+    );
   };
   return (
     <div className="student-courses-container">
@@ -323,14 +489,14 @@ const StudentAllAssignments = () => {
               <Link to="/studentdashboard">Home</Link>
             </li>
           </ul>
-          <ul>
+         <ul>
             <li>
-              <Link to="/studentcourses">Courses</Link>
-            </li>
+              <Link to="/studentcourse">Courses</Link>
+             </li>
           </ul>
           <ul>
             <li>
-              <Link to="/studentassignments">My Assignments</Link>
+              <Link to="/studentallassignments">My Assignments</Link>
             </li>
           </ul>
           <ul>
@@ -349,7 +515,6 @@ const StudentAllAssignments = () => {
         <div className="student-courses-header">
           <h3 className="student-courses-title"> My Assignments</h3>
 
-
         </div>
         <div className="assignment-view-wrapper">
           {fetchAssignment === true ? (
@@ -361,7 +526,6 @@ const StudentAllAssignments = () => {
           ) : (
             <>
               {courseDropdown}
-
               {allAssignments &&
                 allAssignments
                   .filter((i) => {
@@ -373,6 +537,15 @@ const StudentAllAssignments = () => {
                     course.assignmentDetails.map((assignment) => (
                       <div className="student-assignment-card">
 
+                        <div className="student-assignment-divider">
+                          <span className="student-assignment-title-heading">
+                            Course Name:
+                          </span>
+                          <span className="student-assignment-value">
+                            {course.title}
+                          </span>
+                        </div>
+                        <hr className="assignment-divider-student-inline" />
                         <div className="student-assignment-educator-name">
                           <div className="student-assignment-divider">
                             <span className="student-assignment-title-heading">
@@ -400,86 +573,97 @@ const StudentAllAssignments = () => {
                             {assignment.assignmentDescription}
                           </div>
                         </div>
-                        {getGrade(assignment.studentResponse)?.grade !== "" ? (
+                        <hr className="assignment-divider-student-inline" />
+                        <div className="student-assignment-divider">
+                          <div className="student-assignment-title-heading">
+                            Dead line for submission:
+                          </div>
+                          <div className="student-assignment-value-deadline">
+                            {assignment.submissionDate}
+                          </div>
+                        </div>
+
+                        {!isSubmissionDateOver(assignment.submissionDate) &&
+                        !getGrade(assignment.studentResponse)?.grade ? (
+                          <>
+                            <div className="student-assignment-divider">
+                              <div className="student-assignment-title-heading">
+                                Assignment Response:
+                              </div>
+                              <div className="student-assignment-value-deadline">
+                                <textarea
+                                  className="student-assignment-textarea"
+                                  value={assignmentSubmissionValue}
+                                  onChange={textAreaChnage}
+                                ></textarea>
+                                <button
+                                  className="assignment-submit-btn-style"
+                                  onClick={() =>
+                                    submitAssignment(
+                                      assignment.id,
+                                      user.uid,
+                                      assignmentSubmissionValue
+                                    )
+                                  }
+                                >
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                            <hr className="assignment-divider-student-inline" />
+                          </>
+                        ) : isSubmissionDateOver(assignment.submissionDate) &&
+                          !getGrade(assignment.studentResponse)?.grade ? (
                           <>
                             <hr className="assignment-divider-student-inline" />
                             <div className="student-assignment-divider">
                               <div className="student-assignment-title-heading">
                                 Graded Point:{" "}
                                 <span className="student-assignment-value-graded-value">
-                                  {getGrade(assignment.studentResponse)?.grade}
+                                  {"Failed"}
                                 </span>
                               </div>
                             </div>
                             <hr className="assignment-divider-student-inline" />
                           </>
                         ) : (
-                          <>
-                            <hr className="assignment-divider-student-inline" />
-                            <div className="student-assignment-divider">
-                              <div className="student-assignment-title-heading">
-                                Dead line for submission:
-                              </div>
-                              <div className="student-assignment-value-deadline">
-                                {assignment.submissionDate}
-                              </div>
-                            </div>
-
-                            <hr className="assignment-divider-student-inline" />
-                            {!isSubmissionDateOver(
-                              assignment.submissionDate
-                            ) && (
-                              <>
-                                <div className="student-assignment-divider">
-                                  <div className="student-assignment-title-heading">
-                                    Assignment Response:
-                                  </div>
-                                  <div className="student-assignment-value-deadline">
-                                    <textarea
-                                      className="student-assignment-textarea"
-                                      value={assignmentSubmissionValue}
-                                      onChange={textAreaChnage}
-                                    ></textarea>
-                                    <button
-                                      className="assignment-submit-btn-style"
-
-                                      onClick={() =>
-                                        submitAssignment(
-                                          assignment.id,
-                                          user.uid,
-                                          assignmentSubmissionValue
-                                        )
-                                      }
-                                    >
-                                      Submit
-                                    </button>
-                                  </div>
+                          getGrade(assignment.studentResponse)?.grade && (
+                            <>
+                              <hr className="assignment-divider-student-inline" />
+                              <div className="student-assignment-divider">
+                                <div className="student-assignment-title-heading">
+                                  Graded Point:{" "}
+                                  <span className="student-assignment-value-graded-value">
+                                    {
+                                      getGrade(assignment.studentResponse)
+                                        ?.grade
+                                    }
+                                  </span>
                                 </div>
-                                <hr className="assignment-divider-student-inline" />
-                              </>
-                            )}
-                          </>
+                              </div>
+                              <hr className="assignment-divider-student-inline" />
+                            </>
+                          )
                         )}
 
                         <div className="student-assignment-title-heading">
                           Comment
                         </div>
-
                         <div>
                           {assignment?.commentDetails?.map((comments) => {
-                            return comments?.commentConversation?.map(
-                              (conversation) => {
-                                return (
-                                  <div className="comments-line-block">
-                                    <span className="comment-user-title">
-                                      {conversation?.userDetails?.name}:
-                                    </span>
-                                    <span className="comment-user-comment">
-                                      {conversation?.commentValue}
-                                    </span>
-                                  </div>
-                                );
-                              }
+                            return (
+                              comments?.commentConversation &&
+                              Object.values(comments?.commentConversation)?.map(
+                                (conversation) => {
+                                  return (
+                                    <div className="comments-line-block">
+                                      <CommentConversation
+                                        conversation={conversation}
+                                      />
+                                    </div>
+                                  );
+                                }
+                              )
                             );
                           })}
                         </div>
@@ -491,7 +675,6 @@ const StudentAllAssignments = () => {
                             value={newCommentValue}
                             onChange={(e) => setNewCommentValue(e.target.value)}
                           />
-
                           <button
                             className="comment-btn"
                             onClick={() =>

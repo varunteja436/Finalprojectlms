@@ -278,11 +278,11 @@ const AdminViewContent = () => {
               <Link to="/dashboard">Home</Link>
             </li>
           </ul>
-          <ul>
-            <li>
-              <Link to="/adminstudentslist">Student List</Link>
-            </li>
-          </ul>
+           <ul>
+                  <li>
+                    <Link to="/adminviewstudents">Student List</Link>
+                  </li>
+                </ul>
           <ul>
             <li>
               <Link to="/educatorlist">Educator List</Link>
@@ -292,11 +292,6 @@ const AdminViewContent = () => {
           <ul>
             <li>
               <Link to="/adminviewcontent"> View Content</Link>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <Link to="/adminprofile"> View Profile</Link>
             </li>
           </ul>
           <ul>

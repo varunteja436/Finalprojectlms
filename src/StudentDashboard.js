@@ -34,7 +34,7 @@ const StudentDashboard = () => {
           </ul>
           <ul>
             <li>
-              <Link to="/studentassignments">My Assignments</Link>
+              <Link to="/studentallassignments">My Assignments</Link>
             </li>
           </ul>
           <ul>

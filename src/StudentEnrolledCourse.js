@@ -82,10 +82,10 @@ const StudentEnrolledCourses = () => {
             </li>
           </ul>
           <ul>
-            <li>
-              <Link to="/studentassignments">My Assignments</Link>
-            </li>
-          </ul>
+                      <li>
+                        <Link to="/studentallassignments">My Assignments</Link>
+                      </li>
+                    </ul>
           <ul>
             <li>
               <Link to="/studentprofile"> View Profile</Link>
@@ -102,7 +102,6 @@ const StudentEnrolledCourses = () => {
         <div className="student-courses-header">
           <h3 className="student-courses-title">Enrolled Courses</h3>
 
-          {/* // remaining header */}
         </div>
 
         <div className="card-wrapper-enrolled-courses">

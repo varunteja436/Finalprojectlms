@@ -94,10 +94,10 @@ const StudentProfile = () => {
             </li>
           </ul>
           <ul>
-            <li>
-              <Link to="/studentassignments">My Assignments</Link>
-            </li>
-          </ul>
+                      <li>
+                        <Link to="/studentallassignments">My Assignments</Link>
+                      </li>
+                    </ul>
           <ul>
             <li>
               <Link to="/studentprofile"> View Profile</Link>

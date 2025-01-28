@@ -55,7 +55,7 @@ const StudentCourseDetails = () => {
               <Link to="/studentcourse">Courses</Link>
             </li>
             <li>
-              <Link to="/studentassignment">My Assignments</Link>
+              <Link to="/studentallassignment">My Assignments</Link>
             </li>
             <li>
               <Link to="/studentprofile">View Profile</Link>
@@ -150,21 +150,7 @@ const StudentCourseDetails = () => {
           <p>No course details available.</p>
         )}
 
-        <div className="assignment-btns">
-          <button
-            className="assignment-btn-style"
-            onClick={() =>
-              navigate("/studentassignments", {
-                state: {
-                  assignmentDetails: location?.state?.courseDetails?.courseId,
-                },
-              })
-            }
-          >
-            View Assignments
-          </button>
-          <button className="assignment-btn-style">View Grade</button>
-        </div>
+        
       </div>
     </div>
   );
