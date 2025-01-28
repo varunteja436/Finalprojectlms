@@ -322,7 +322,53 @@ const StudentAllAssignments = () => {
     return gradeObj;
   };
 
-  
+  const deleteComment = async (commentId) => {
+    try {
+      const db = getDatabase();
+      const commentsRef = ref(db, "comments");
+
+      const snapshot = await get(commentsRef);
+
+      if (snapshot.exists()) {
+        const comments = snapshot.val();
+
+        for (const [key, commentData] of Object.entries(comments)) {
+          const commentConversationArray = Object.values(
+            commentData.commentConversation || {}
+          );
+
+          const commentIndex = commentConversationArray.findIndex(
+            (comment) => comment.id === commentId
+          );
+
+          if (commentIndex !== -1) {
+            const updatedCommentConversation = commentConversationArray.filter(
+              (comment) => comment.id !== commentId
+            );
+
+            const updatedCommentConversationObject =
+              updatedCommentConversation.reduce((acc, item, index) => {
+                acc[index] = item;
+                return acc;
+              }, {});
+
+            await update(ref(db, `comments/${key}`), {
+              commentConversation: updatedCommentConversationObject,
+            });
+
+            await fetchAllAssignmentsForStudent(user.uid);
+            alert(`Comment  has been deleted.`);
+          }
+        }
+
+        console.log(`Comment  not found.`);
+      } else {
+        console.log("No comments found in the database.");
+      }
+    } catch (error) {
+      console.error("Error deleting the comment:", error);
+    }
+  };
 
   const saveEditedComment = async (commentId, editedValue, clearEditFn) => {
     try {
@@ -370,6 +416,8 @@ const StudentAllAssignments = () => {
       clearEditFn();
     }
   };
+
+  
 
   const CommentConversation = ({ conversation }) => {
     const [editComment, setEditComment] = useState(false);
@@ -421,7 +469,12 @@ const StudentAllAssignments = () => {
             >
               Edit
             </div>
-     
+            <div
+              className="student-view-actions"
+              onClick={() => deleteComment(conversation?.id)}
+            >
+              Delete
+            </div>
           </>
         )}
       </>
@@ -436,10 +489,10 @@ const StudentAllAssignments = () => {
               <Link to="/studentdashboard">Home</Link>
             </li>
           </ul>
-          <ul>
+         <ul>
             <li>
-              <Link to="/studentcourses">Courses</Link>
-            </li>
+              <Link to="/studentcourse">Courses</Link>
+             </li>
           </ul>
           <ul>
             <li>
