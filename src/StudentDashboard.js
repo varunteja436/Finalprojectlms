@@ -43,6 +43,11 @@ const StudentDashboard = () => {
             </li>
           </ul>
           <ul>
+          <li>
+                        <Link to="/studentcomletionCourses">Completed Courses</Link>
+                      </li>
+                      </ul>
+          <ul>
             <li>
               <Link to="/">Logout</Link>
             </li>

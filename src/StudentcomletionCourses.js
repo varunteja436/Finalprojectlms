@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./CompletedCourse.css"; 
 
-const CompletedCourses = () => {
+const StudentcomletionCourses = () => {
   const navigate = useNavigate();
   const [completedCourses, setCompletedCourses] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -38,19 +38,6 @@ const CompletedCourses = () => {
     }
   };
 
-  const reopenCourse = async (courseId) => {
-    try {
-      setLoader(true);
-      const courseRef = ref(db, `courses/${courseId}`);
-      await update(courseRef, { completed: false });
-      alert("Course reopened successfully!");
-      fetchCompletedCourses();
-    } catch (error) {
-      console.error("Error reopening course: ", error.message);
-    } finally {
-      setLoader(false);
-    }
-  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -59,38 +46,31 @@ const CompletedCourses = () => {
 
   return (
     <div className="completed-courses-container">
-      <aside>
-        <ul>
-          <li>
-            <Link to="/educatordashboard">Home</Link>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/educatorprofile">Profile</Link>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/educatorCourseList">Course List</Link>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/educatormyassignments">My Assignments</Link>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/completedcourses">Completed courses</Link>
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/">Logout</Link>
-          </li>
-        </ul>
-      </aside>
+   <aside>
+          <ul>
+            <li>
+              <Link to="/studentdashboard">Home</Link>
+            </li>
+            <li>
+              <Link to="/studentcourse">Courses</Link>
+            </li>
+            <li>
+              <Link to="/studentallassignment">My Assignments</Link>
+            </li>
+            <li>
+              <Link to="/studentprofile">View Profile</Link>
+            </li>
+            <ul>
+            <li>
+              <Link to="/studentcomletionCourses">Completed Courses</Link>
+            </li>
+            </ul>
+
+            <li>
+              <Link to="/">Logout</Link>
+            </li>
+          </ul>
+        </aside>
 
       <div>
         <h1 className="form-header1">Completed Courses</h1>
@@ -108,12 +88,7 @@ const CompletedCourses = () => {
                   <strong>Start Date:</strong> {formatDate(course.startDate)} <br />
                   <strong>End Date:</strong> {formatDate(course.endDate)}
                 </div>
-                <button
-                  onClick={() => reopenCourse(course.id)}
-                  className="reopen-course-button"
-                >
-                  Reopen Course
-                </button>
+                
               </div>
             ))
           ) : (
@@ -125,4 +100,4 @@ const CompletedCourses = () => {
   );
 };
 
-export default CompletedCourses;
+export default StudentcomletionCourses

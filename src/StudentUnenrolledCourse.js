@@ -120,6 +120,9 @@ const StudentUnEnrolledCoursesViewDetails = () => {
               <Link to="/studentprofile"> View Profile</Link>
             </li>
           </ul>
+          <li>
+                        <Link to="/studentcomletionCourses">Completed Courses</Link>
+                      </li>
           <ul>
             <li>
               <Link to="/">Logout</Link>

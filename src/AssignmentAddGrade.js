@@ -13,7 +13,6 @@ const AssignmentAddGrade = () => {
     const assignmentRef = ref(db, `assignments/${assignmentId}`);
 
     try {
-      // Fetch the assignment by ID
       const assignmentSnapshot = await get(assignmentRef);
 
       if (!assignmentSnapshot.exists()) {
@@ -24,7 +23,6 @@ const AssignmentAddGrade = () => {
       const assignmentData = assignmentSnapshot.val();
       const studentResponses = assignmentData.studentResponse || [];
 
-      // Find the index of the student in studentResponse
       const studentIndex = studentResponses.findIndex(
         (response) => response.studentId === studentId
       );
@@ -34,10 +32,8 @@ const AssignmentAddGrade = () => {
         return;
       }
 
-      // Add or update the grade for the student
       studentResponses[studentIndex].grade = gradeValue;
 
-      // Update the assignment in the database
       await update(assignmentRef, { studentResponse: studentResponses });
 
       alert("Grade added/updated successfully!");
@@ -113,7 +109,6 @@ const AssignmentAddGrade = () => {
               </span>
             </div>
             <hr className="add-grade-divider" />
-            {/* <div><span>Student Name</span><span>{location?.state?.userDetails?.name}</span></div> */}
             <div>
               <div className="add-grade-response">Student Responses </div>
               <table className="add-grade-table">
