@@ -112,7 +112,6 @@
   margin-top: 10px;
 }
 
-/* styles.css */
 .student-assignment-textarea {
   width: 100%;
   height: 150px;
@@ -122,12 +121,12 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  resize: vertical; /* Allows vertical resizing only */
+  resize: vertical; 
   outline: none;
   transition: border-color 0.3s ease;
 }
 
 textarea:focus {
-  border-color: #4caf50; /* Green border on focus */
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Green glow on focus */
+  border-color: #4caf50; 
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); 
 }

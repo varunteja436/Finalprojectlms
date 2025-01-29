@@ -115,11 +115,7 @@ const AssignmentViewProgress = () => {
               studentDetails?.map((student, index) => (
                 <tr key={index}>
                   <td>{student.userDetails.name}</td>
-                  {/* <td>
-                    {student.responsesArr.map((i) => (
-                      <span>{`Submitted on - ${i.newValue}`}</span>
-                    ))}
-                  </td> */}
+       
                   <td
                     className="add-grade"
                     onClick={() => {
