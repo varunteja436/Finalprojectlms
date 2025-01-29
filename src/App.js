@@ -28,6 +28,7 @@ import EditAssignments from "./Editassignment";
 import CompletedCourses from "./CompletedCourses";
 import SuspendedStudent from "./Studentsuspend";
 import StudentAllAssignments from "./studentallassignments";
+import StudentcomletionCourses from "./StudentcomletionCourses";
 import Educatorviewstudents from "./Educatorviewstudents";
 import AssignmentAddGrade from "./AssignmentAddGrade";
 import "./App.css";
@@ -61,6 +62,7 @@ function App() {
           <Route path="/educatorcreateassignment" element={<Educatorcreateassignment />} />
           <Route path="/assignmentviewprogress" element={<AssignmentViewProgress />} />
           <Route path="/studentcoursedetails" element={<StudentCourseDetails />} />
+          <Route path="/studentcomletionCourses" element={<StudentcomletionCourses />} />
           <Route path="/adminviewcontent" element={<AdminViewContent />} />
           <Route path="/editassignment" element={<EditAssignments />} />
           <Route path="/suspendedstudent" element={<SuspendedStudent />} />

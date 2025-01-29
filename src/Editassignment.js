@@ -16,17 +16,7 @@ const EditAssignments = () => {
   const [fetchingCourses, setAllFetchingCourses] = useState(false);
   const [allCoursesOptions, setAllCoursesOptions] = useState([]);
   const [allCoursesDetails, setAllCoursesDetails] = useState([]);
-  // [
-  //   assignmentDescription,
-  //   assignmentTitle,
-  //   courseDetails,
-  //   courseId,
-  //   createdAt,
-  //   educatorUid,
-  //   studentResponse,
-  //   submissionDate,
-  //   uid,
-  // ];
+
   console.log("allCoursesDetails", allCoursesDetails);
   useEffect(() => {
     const fetchAllCourses = async () => {
@@ -82,7 +72,6 @@ const EditAssignments = () => {
         `assignments/${assignmentData?.assignmentId}`
       );
 
-      // Check if the assignment exists
       const snapshot = await get(assignmentRef);
 
       if (snapshot.exists()) {

@@ -350,13 +350,7 @@ const AdminViewContent = () => {
                         </span>
                       </div>
                       <div className="admin-view-content-class-title">
-                        {/* progress bar */}
-                        {/* <span className="admin-view-content-assignment-span-title">
-                          Class -{" "}
-                        </span>
-                        <span className="admin-view-content-assignment-span-value">
-                          {item?.courseDetails?.title}
-                        </span> */}
+
                       </div>
                     </div>
 

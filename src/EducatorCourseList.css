@@ -144,7 +144,6 @@ aside ul li a:hover {
   background-color: #c0392b;
 }
 
-/* Loader (if you want to display a loader during fetching) */
 .loader {
   display: flex;
   justify-content: center;
